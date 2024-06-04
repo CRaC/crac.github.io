@@ -1,5 +1,5 @@
 +++
-title = "Create a Checkpoint and Restore from Checkpoint"
+title = "Creating a Checkpoint and Restoring from Checkpoint"
 weight = 30
 +++
 

@@ -1,5 +1,5 @@
 +++
-title = "Implement CRaC in your Application"
+title = "Implementing CRaC in your Application"
 weight = 20
 +++
 
