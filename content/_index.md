@@ -3,7 +3,7 @@ title = "Coordinated Restore at Checkpoint"
 weight = 1
 +++
 
-{{% notice style="blue" title="What is CRaC?" icon="java" %}}
+{{% notice style="blue" title="What is CRaC?" %}}
 Coordinated Restore at Checkpoint (CRaC) is a JDK project that allows you to start Java programs with a shorter time to first transaction, combined with less time and resources to achieve full code speed.
 {{% /notice %}}
 
@@ -12,7 +12,7 @@ Coordinated Restore at Checkpoint (CRaC) is a JDK project that allows you to sta
 {{% button href="/use/implement-crac/" style="blue" icon="fas fa-github" %}}CRaC IN YOUR CODE{{% /button %}}
 {{% button href="/use/checkpoint-and-restore/" style="blue" icon="rocket" %}}USING CRaC{{% /button %}}
 
-{{% button href="https://github.com/CRaC/org.crac/tags" style="blue" icon="bookmark" %}}CRaC API 1.4.0 NOW AVAILABLE{{% /button %}}
+{{% button href="https://github.com/CRaC/org.crac/releases/tag/1.4.0" style="blue" icon="bookmark" %}}CRaC API 1.4.0 NOW AVAILABLE{{% /button %}}
 
 ## Why CRaC?
 
@@ -27,7 +27,7 @@ The CRaC (Coordinated Restore at Checkpoint) Project researches the coordination
 <span style="font-weight: bold; font-size: 1.4em;">Spring Boot</span>
 <br/><br/>
 
-{{% button href="https://github.com/CRaC/example-spring-boot" style="blue" icon="github" %}}Example project{{% /button %}}
+{{% button href="https://github.com/CRaC/example-spring-boot" style="blue" %}}Example project{{% /button %}}
 
 [More info](/frameworks/spring-boot/)
 
@@ -38,7 +38,7 @@ The CRaC (Coordinated Restore at Checkpoint) Project researches the coordination
 <span style="font-weight: bold; font-size: 1.4em;">Quarkus</span>
 <br/><br/>
 
-{{% button href="https://github.com/CRaC/example-quarkus" style="blue" icon="github" %}}Example project{{% /button %}}
+{{% button href="https://github.com/CRaC/example-quarkus" style="blue" %}}Example project{{% /button %}}
 
 [More info](/frameworks/quarkus/)
 
@@ -49,7 +49,7 @@ The CRaC (Coordinated Restore at Checkpoint) Project researches the coordination
 <span style="font-weight: bold; font-size: 1.4em;">Micronaut</span>
 <br/><br/>
 
-{{% button href="https://github.com/CRaC/example-micronaut" style="blue" icon="git" %}}Example project{{% /button %}}
+{{% button href="https://github.com/CRaC/example-micronaut" style="blue" %}}Example project{{% /button %}}
 
 [More info](/frameworks/micronaut/)
 
@@ -60,7 +60,7 @@ The CRaC (Coordinated Restore at Checkpoint) Project researches the coordination
 <span style="font-weight: bold; font-size: 1.4em;">AWS Lambda</span>
 <br/><br/>
 
-{{% button href="https://github.com/CRaC/example-lambda" style="blue" icon="github" %}}Example project{{% /button %}}
+{{% button href="https://github.com/CRaC/example-lambda" style="blue" %}}Example project{{% /button %}}
 
 [More info](/frameworks/aws-lambda/)
 
