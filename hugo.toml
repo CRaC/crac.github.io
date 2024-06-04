@@ -1,0 +1,33 @@
+languageCode = 'en-us'
+defaultContentLanguage = "en"
+baseURL = 'https://crac.org/'
+title = 'crac.org'
+theme = 'hugo-theme-relearn'
+publishDir = "public"
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[params]
+themeVariant = ['blue']
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> CRaC Repository"
+url = "https://github.com/CRaC"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-java'></i> OpenJDK Project"
+url = "https://openjdk.org/projects/crac/"
+weight = 20
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-java'></i> OpenJDK Wiki"
+url = "https://wiki.openjdk.org/display/crac"
+weight = 30
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-java'></i> Foojay Blogs"
+url = "https://foojay.io/today/category/crac/"
+weight = 40
+
