@@ -5,6 +5,24 @@ weight = 25
 
 To use the CRAC functionality, you need a Java runtime that has support for CRaC integrated.
 
+## OpenJDK CRaC
+
+The OpenJDK CRaC Project is developed in the [GitHub repository github.com/openjdk/crac](https://github.com/openjdk/crac). The latest releases are available on [crac.github.io/openjdk-builds](https://crac.github.io/openjdk-builds).
+
+**NOTE**: The JDK archive should be extracted with `sudo`.
+
+```sh
+$ sudo tar zxf <jdk>.tar.gz
+```
+
+When using CRaC, if you see an `Operation not permitted` error, you may have to update your `criu` permissions with:
+
+```sh
+sudo chown root:root $JAVA_HOME/lib/criu
+sudo chmod u+s $JAVA_HOME/lib/criu
+```
+
+
 ## Azul Zulu Builds of OpenJDK
 
 Azul integrated full CRaC functionality for Linux/x64 and Linux/Arm64, in version 17, 21, and 22 of Azul Zulu Builds of OpenJDK. This means, for now, you can run an application with CRaC on any system thanks to the crac.org dependency, but only on the specified OS systems the CRaC functionality in the JVM will work.
