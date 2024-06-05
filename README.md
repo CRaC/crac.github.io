@@ -13,3 +13,7 @@ This repository contains the sources of the CRaC documentation that is provided 
 * Install Hugo, on macOS: `brew install hugo`.
 * Run the website with `hugo serve`.
 * The website is available on [localhost:1313](http://localhost:1313/).
+
+## Website Search
+
+Via https://docsearch.algolia.com/apply/, to be requested when available on crac.org.
