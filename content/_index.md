@@ -12,7 +12,7 @@ Coordinated Restore at Checkpoint (CRaC) is a JDK project that allows you to sta
 {{% button href="/use/implement-crac/" style="blue" icon="rocket" %}}CRaC IN YOUR CODE{{% /button %}}
 {{% button href="/use/checkpoint-and-restore/" style="blue" icon="rocket" %}}USING CRaC{{% /button %}}
 
-{{% button href="https://github.com/CRaC/org.crac/releases/tag/1.4.0" style="blue" icon="bookmark" %}}CRaC API 1.4.0 NOW AVAILABLE{{% /button %}}
+{{% button href="https://github.com/CRaC/org.crac/releases/tag/1.5.0" style="blue" icon="bookmark" %}}CRaC API 1.5.0 NOW AVAILABLE{{% /button %}}
 
 ## Why CRaC?
 
