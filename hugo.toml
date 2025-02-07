@@ -2,7 +2,7 @@ languageCode = 'en-us'
 defaultContentLanguage = "en"
 baseURL = 'https://crac.org/'
 title = 'crac.org'
-theme = 'hugo-theme-relearn'
+theme = 'hugo-theme-relearn-7.3.2'
 publishDir = "public"
 
 [markup.goldmark.renderer]

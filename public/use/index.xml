@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Using CRaC :: crac.org</title>
+    <link>http://localhost:1313/use/index.html</link>
+    <description>CRaC deployment scheme reflects the need to collect data required for Java application initialization and warm-up.&#xA;a Java application (or container) is deployed in the canary environment the app processes canary requests that triggers class loading and JIT compilation the running application is checkpointed by some mean this creates the image of the JVM and application; the image is considered as a part of a new deployment bundle the Java application with the image are deployed in the production environment the restored Java process uses loaded classes from and JIT code from the immediately Read more Java Runtime with CRaC Support Implementing CRaC in your Application Creating a Checkpoint and Restoring from Checkpoint</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/use/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java Runtime with CRaC Support</title>
+      <link>http://localhost:1313/use/crac-runtime/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/use/crac-runtime/index.html</guid>
+      <description>To use the CRAC functionality, you need a Java runtime that has support for CRaC integrated.&#xA;OpenJDK CRaC LATEST OPENJDK CRAC RELEASE The OpenJDK CRaC Project is developed in the GitHub repository github.com/openjdk/crac.&#xA;NOTE: The JDK archive should be extracted with sudo.&#xA;$ sudo tar zxf &lt;jdk&gt;.tar.gz When using CRaC, if you see an Operation not permitted error, you may have to update your criu permissions with:</description>
+    </item>
+    <item>
+      <title>Implementing CRaC in your Application</title>
+      <link>http://localhost:1313/use/implement-crac/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/use/implement-crac/index.html</guid>
+      <description>WARNING: next is a proposal phase and is subject to change&#xA;Please refer to the Projects with CRaC support section, step-by-step guide or best practices guide to get an application with CRaC support. The rest of the section is written for the spring-boot example.&#xA;For the first, Java command line parameter -XX:CRaCCheckpointTo=PATH defines a path to store the image and also allows the java instance to be checkpointed. By the current implementation, the image is a directory with image files. The directory will be created if it does not exist, but no parent directories are created.</description>
+    </item>
+    <item>
+      <title>Creating a Checkpoint and Restoring from Checkpoint</title>
+      <link>http://localhost:1313/use/checkpoint-and-restore/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/use/checkpoint-and-restore/index.html</guid>
+      <description>WARNING: next is a proposal phase and is subject to change&#xA;Please refer to the Projects with CRaC support section, step-by-step guide or best practices guide to get an application with CRaC support. The rest of the section is written for the spring-boot example.&#xA;For the first, Java command line parameter -XX:CRaCCheckpointTo=PATH defines a path to store the image and also allows the java instance to be checkpointed. By the current implementation, the image is a directory with image files. The directory will be created if it does not exist, but no parent directories are created.</description>
+    </item>
+  </channel>
+</rss>

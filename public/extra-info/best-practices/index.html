@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.139.4">
+    <meta name="generator" content="Relearn 7.3.2">
+    <meta name="description" content="Best practices for implementing CRaC support in your application/library This guide assumes you are already familiar with the concepts and Resource API; please check out the step-by-step guide for those.
+Implementing Resource as inner class In order to encapsulate the functionality, the Resource interface is sometimes not implemented directly by the component but we rather create an (anonymous) inner class. However it is not sufficient to pass this resource to the Context.register() method; Global Context tracks resources using weak references. As there is no unregister method on the Context, had a strong reference been used this would prevent the component from being garbage-collected when the application releases it. Therefore the class implementing Resource should be stored inside the component (in a field) to prevent garbage-collection:">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Best Practices :: crac.org">
+    <meta name="twitter:description" content="Best practices for implementing CRaC support in your application/library This guide assumes you are already familiar with the concepts and Resource API; please check out the step-by-step guide for those.
+Implementing Resource as inner class In order to encapsulate the functionality, the Resource interface is sometimes not implemented directly by the component but we rather create an (anonymous) inner class. However it is not sufficient to pass this resource to the Context.register() method; Global Context tracks resources using weak references. As there is no unregister method on the Context, had a strong reference been used this would prevent the component from being garbage-collected when the application releases it. Therefore the class implementing Resource should be stored inside the component (in a field) to prevent garbage-collection:">
+    <meta property="og:url" content="http://localhost:1313/extra-info/best-practices/index.html">
+    <meta property="og:site_name" content="crac.org">
+    <meta property="og:title" content="Best Practices :: crac.org">
+    <meta property="og:description" content="Best practices for implementing CRaC support in your application/library This guide assumes you are already familiar with the concepts and Resource API; please check out the step-by-step guide for those.
+Implementing Resource as inner class In order to encapsulate the functionality, the Resource interface is sometimes not implemented directly by the component but we rather create an (anonymous) inner class. However it is not sufficient to pass this resource to the Context.register() method; Global Context tracks resources using weak references. As there is no unregister method on the Context, had a strong reference been used this would prevent the component from being garbage-collected when the application releases it. Therefore the class implementing Resource should be stored inside the component (in a field) to prevent garbage-collection:">
+    <meta property="og:locale" content="en_us">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Extra info about CRaC">
+    <meta itemprop="name" content="Best Practices :: crac.org">
+    <meta itemprop="description" content="Best practices for implementing CRaC support in your application/library This guide assumes you are already familiar with the concepts and Resource API; please check out the step-by-step guide for those.
+Implementing Resource as inner class In order to encapsulate the functionality, the Resource interface is sometimes not implemented directly by the component but we rather create an (anonymous) inner class. However it is not sufficient to pass this resource to the Context.register() method; Global Context tracks resources using weak references. As there is no unregister method on the Context, had a strong reference been used this would prevent the component from being garbage-collected when the application releases it. Therefore the class implementing Resource should be stored inside the component (in a field) to prevent garbage-collection:">
+    <meta itemprop="wordCount" content="1223">
+    <title>Best Practices :: crac.org</title>
+    <link href="/css/fontawesome-all.min.css?1738922221" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1738922221" rel="stylesheet"></noscript>
+    <link href="/css/auto-complete.css?1738922221" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1738922221" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1738922221" rel="stylesheet">
+    <link href="/css/theme.css?1738922221" rel="stylesheet">
+    <link href="/css/format-html.css?1738922221" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.min = ``;
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      // variant stuff
+      window.relearn.themevariants = [ 'blue' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        var select = document.querySelector("#R-select-variant");
+        if (select) {
+          select.value = variant;
+        }
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/extra-info/best-practices/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#best-practices-for-implementing-crac-support-in-your-applicationlibrary">Best practices for implementing CRaC support in your application/library</a>
+      <ul>
+        <li><a href="#implementing-resource-as-inner-class">Implementing Resource as inner class</a></li>
+        <li><a href="#component-lifecycle">Component lifecycle</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">Coordinated Restore at Checkpoint</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/extra-info/index.html"><span itemprop="name">Extra info about CRaC</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">Best Practices</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/extra-info/index.html" title="Extra info about CRaC (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-next" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/extra-info/debugging/index.html" title="Debugging (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable extra-info" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="best-practices">Best Practices</h1>
+
+<h2 id="best-practices-for-implementing-crac-support-in-your-applicationlibrary">Best practices for implementing CRaC support in your application/library</h2>
+<p>This guide assumes you are already familiar with the concepts and <code>Resource</code> API; please check out the <a href="STEP-BY-STEP.md">step-by-step guide</a> for those.</p>
+<h3 id="implementing-resource-as-inner-class">Implementing Resource as inner class</h3>
+<p>In order to encapsulate the functionality, the <code>Resource</code> interface is sometimes not implemented directly by the component but we rather create an (anonymous) inner class. However it is not sufficient to pass this resource to the <code>Context.register()</code> method; Global Context tracks resources using <em>weak</em> references. As there is no <code>unregister</code> method on the Context, had a strong reference been used this would prevent the component from being garbage-collected when the application releases it. Therefore the class implementing <code>Resource</code> should be stored inside the component (in a field) to prevent garbage-collection:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Component</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Resource cracHandler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Component</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* other initialization */</span>
+</span></span><span style="display:flex;"><span>        cracHandler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Resource() {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeCheckpoint</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterRestore</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* Had we used just .register(new Resource() { ... }) in here
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">           it would be immediately garbage-collected. */</span>
+</span></span><span style="display:flex;"><span>        Core.<span style="color:#a6e22e">getGlobalContext</span>().<span style="color:#a6e22e">register</span>(cracHandler);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h3 id="component-lifecycle">Component lifecycle</h3>
+<p>Applications and its components are often designed with a simple lifecycle in mind; the application boots, then it is actively used, and in the end it enters shutdown and finally ends up in a terminated state, unable to start back. If the application needs the functionality again the component is re-created. This allows simpler reasoning and some performance optimizations by making fields final, or not protecting the access to an uninitialized component as the developer knows that it is not published yet.</p>
+<p>While usually most of the application can stay as-is, CRaC extends the lifecycle of some components by adding the transition from active to a suspended state and back. In the suspended state, until the whole VM is terminated or before the component is restored, the rest of that application is still running and could access the component - e.g. a pool of network connections - and would find this component to be unusable at that moment. One solution is to block the thread and unblock it when the component is ready for serving again.</p>
+<p>The implementation of this synchronization depends mostly on the threading model of the application. We will refer to the synchronized component as <em>resource</em>, even though it might not implement the <code>Resource</code> interface directly.</p>
+<h4 id="general-case-unknown-number-of-threads-arriving-randomly">General case: unknown number of threads arriving randomly</h4>
+<p>The most general case is when we don&rsquo;t have any guarantees about who&rsquo;s calling into the resource. In order to block any access to that we will use the <code>java.util.concurrent.ReadWriteLock</code>:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConnectionPool</span> <span style="color:#66d9ef">implements</span> Resource {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ReadWriteLock lock <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReentrantReadWriteLock();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Lock readLock <span style="color:#f92672">=</span> lock.<span style="color:#a6e22e">readLock</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Lock writeLock <span style="color:#f92672">=</span> lock.<span style="color:#a6e22e">writeLock</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* Constructor registers this Resource */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Connection <span style="color:#a6e22e">getConnection</span>() {
+</span></span><span style="display:flex;"><span>        readLock.<span style="color:#a6e22e">lock</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* actual code fetching the connection */</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* In this example the access to the connection itself
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">               is not protected and the application must be able 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">               to handle a closed connection. */</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>            readLock.<span style="color:#a6e22e">unlock</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeCheckpoint</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        writeLock.<span style="color:#a6e22e">lock</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* close all connections */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* Note: if this method throws an exception CRaC will try to restore the resource
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">                 by calling afterRestore() - we don&#39;t need to unlock the lock here */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterRestore</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* initialize connections if needed */</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>            writeLock.<span style="color:#a6e22e">unlock</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>This solution has the obvious drawback of adding contention on the hot path, the <code>getConnection()</code> method. Even though readers won&rsquo;t block each other, the implementation of read locking likely has to perform some atomic writes which are not cost free.</p>
+<p>CRaC might eventually provide an optimized version for this read-write locking pattern that would move most of the cost to the write lock (as we don&rsquo;t need to optimize for checkpoint performance).</p>
+<h4 id="one-or-known-number-of-periodically-arriving-threads">One or known number of periodically arriving threads</h4>
+<p>When there is only a single thread, e.g. fetching a task from a queue, or known number of parties that arrive to the component often enough we can apply a more efficient solution. Let&rsquo;s take an example of a resource logging data to a file, and assume that the checkpoint notifications are invoked from another thread (that is the case when it is triggered through <code>jcmd &lt;pid&gt; JDK.checkpoint</code>). We will use the <code>java.util.concurrent.Phaser</code> rather than <code>j.u.c.CyclicBarrier</code> as the former has a non-interruptible version of waiting.</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Logger</span> <span style="color:#66d9ef">implements</span> Resource {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> 1; <span style="color:#75715e">// number of threads calling write()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">volatile</span> Phaser phaser;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span>(Chunk data) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        checkForCheckpoint();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* do the actual write */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">checkForCheckpoint</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        Phaser phaser <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">phaser</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (phaser <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (phaser.<span style="color:#a6e22e">arriveAndAwaitAdvance</span>() <span style="color:#f92672">&lt;</span> 0) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException(<span style="color:#e6db74">&#34;Shouldn&#39;t terminate here&#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* now the resource is suspended */</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (phaser.<span style="color:#a6e22e">arriveAndAwaitAdvance</span>() <span style="color:#f92672">&lt;</span> 0) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IOException(<span style="color:#e6db74">&#34;File could not be open after restore&#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeCheckpoint</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        phaser <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Phaser(N <span style="color:#f92672">+</span> 1); <span style="color:#75715e">// +1 for self</span>
+</span></span><span style="display:flex;"><span>        phaser.<span style="color:#a6e22e">arriveAndAwaitAdvance</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* close file being written */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterRestore</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        Phaser phaser <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">phaser</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">phaser</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* reopen the file */</span>
+</span></span><span style="display:flex;"><span>            phaser.<span style="color:#a6e22e">arriveAndAwaitAdvance</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            phaser.<span style="color:#a6e22e">forceTermination</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> e;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>This synchronization requires only one volatile read on each <code>write()</code> call, that is generally a cheap operation. However if one of the expected threads is waiting for a long time the checkpoint would be blocked. This could be mitigated by using shorter timeouts (e.g. if the thread is polling a queue) or even actively interrupting it from the <code>beforeCheckpoint</code> method.</p>
+<h4 id="eventloop-model">Eventloop model</h4>
+<p>Another specific case is the eventloop model where the application uses single thread for all operations in the resource and already has a mechanism to schedule task in that eventloop. Let&rsquo;s take an example of a resource sending a heartbeat message.</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HeartbeatManager</span> <span style="color:#66d9ef">implements</span> Runnable, Resource {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> ScheduledExecutorService eventloop; <span style="color:#75715e">// single-threaded</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> suspended;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">HeartbeatManager</span>(Executor eventloop) {
+</span></span><span style="display:flex;"><span>        eventloop.<span style="color:#a6e22e">scheduleAtFixedRate</span>(<span style="color:#66d9ef">this</span>, 0, 1, TimeUnit.<span style="color:#a6e22e">MINUTES</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* send heartbeat message */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeCheckpoint</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">synchronized</span> (<span style="color:#66d9ef">this</span>) {
+</span></span><span style="display:flex;"><span>            HeartbeatManager self <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>            executor.<span style="color:#a6e22e">execute</span>(() <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">synchronized</span> (self) {
+</span></span><span style="display:flex;"><span>                    self.<span style="color:#a6e22e">suspended</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>                    self.<span style="color:#a6e22e">notify</span>();
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">while</span> (self.<span style="color:#a6e22e">suspended</span>) {
+</span></span><span style="display:flex;"><span>                        self.<span style="color:#a6e22e">wait</span>();
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>suspended) {
+</span></span><span style="display:flex;"><span>                wait();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* shutdown */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterRestore</span>(Context<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Resource<span style="color:#f92672">&gt;</span> context) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* restore */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">synchronized</span> (<span style="color:#66d9ef">this</span>) {
+</span></span><span style="display:flex;"><span>            suspended <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>            notify();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Beware that if the single-threaded executor is shared between several components this solution is not applicable in the current form as one resource would block and the others would not be able to get suspended. In this case it might make sense to centralize the control into one resource per executor; this is out of scope of this document, though.</p>
+<p>Also Note one detail in the example above: if the application is stopped for a long time the task scheduled by the <code>ScheduledExecutorService.scheduleAtFixedRate(...)</code>  would try to keep up after restore and perform all the missed invocations. Handling that should be a part of the <code>beforeCheckpoint</code> procedure, cancelling the task and rescheduling it again in <code>afterRestore</code>.</p>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/index.html">
+            crac.org
+          </a>
+        </div>
+        <script>
+          window.index_js_url="/searchindex.en.js?1738922221";
+        </script>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1738922221" defer></script>
+        <script src="/js/search.js?1738922221" defer></script>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <ul>
+          <li><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+        </ul>
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-shortcutmenu-home" class="R-sidebarmenu">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/about/index.html"><a class="padding" href="/about/index.html">About CRaC</a><ul id="R-subsections-77102f70526b1c2db0eced54632dc618" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/use/index.html"><a class="padding" href="/use/index.html">Using CRaC</a><ul id="R-subsections-8cb5cd941cf49a6eeef7776eae25bd78" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/examples/index.html"><a class="padding" href="/examples/index.html">Example implementations</a><ul id="R-subsections-2e4187ca04853a7e1382c8d86f7be6fd" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/frameworks/index.html"><a class="padding" href="/frameworks/index.html">Frameworks with CRaC integration</a><ul id="R-subsections-a46d35614961d980fe9849d77710d3a8" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/extra-info/index.html"><a class="padding" href="/extra-info/index.html">Extra info about CRaC</a><ul id="R-subsections-458723ea13e88f314ee657ebd9c529db" class="collapsible-menu">
+            <li class="active " data-nav-id="/extra-info/best-practices/index.html"><a class="padding" href="/extra-info/best-practices/index.html">Best Practices</a></li>
+            <li class="" data-nav-id="/extra-info/debugging/index.html"><a class="padding" href="/extra-info/debugging/index.html">Debugging</a></li>
+            <li class="" data-nav-id="/extra-info/cpu-features/index.html"><a class="padding" href="/extra-info/cpu-features/index.html">CPU Features</a></li>
+            <li class="" data-nav-id="/extra-info/fd-policies/index.html"><a class="padding" href="/extra-info/fd-policies/index.html">File descriptor policies</a></li></ul></li>
+          </ul>
+        </div>
+        <div id="R-shortcutmenu-shortcuts" class="R-sidebarmenu">
+          <div class="nav-title padding">More</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="https://github.com/CRaC"><a class="padding" href="https://github.com/CRaC" target="_blank"><i class='fab fa-github'></i> CRaC Repository</a></li>
+            <li class="" data-nav-id="https://openjdk.org/projects/crac/"><a class="padding" href="https://openjdk.org/projects/crac/" target="_blank"><i class='fab fa-java'></i> OpenJDK Project</a></li>
+            <li class="" data-nav-id="https://wiki.openjdk.org/display/crac"><a class="padding" href="https://wiki.openjdk.org/display/crac" target="_blank"><i class='fab fa-java'></i> OpenJDK Wiki</a></li>
+            <li class="" data-nav-id="https://foojay.io/today/category/crac/"><a class="padding" href="https://foojay.io/today/category/crac/" target="_blank"><i class='fab fa-java'></i> Foojay Blogs</a></li>
+          </ul>
+        </div>
+        <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
+        <div id="R-menu-footer">
+          <hr class="padding default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter">
+          <div id="R-prefooter" class="footerLangSwitch footerVariantSwitch footerVisitedLinks">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/extra-info/best-practices/index.html" lang="en-us" selected></option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li id="R-select-variant-container" class="footerVariantSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-paint-brush"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-variant">Theme</label>
+                    <select id="R-select-variant" onchange="window.relearn.changeVariant( this.value );">
+                      <option id="R-select-variant-blue" value="blue" selected>Blue</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <script>window.relearn.markVariant();</script>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter showFooter">
+        <p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="/js/clipboard.min.js?1738922221" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1738922221" defer></script>
+    <script src="/js/theme.js?1738922221" defer></script>
+  </body>
+</html>

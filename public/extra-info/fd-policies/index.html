@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.139.4">
+    <meta name="generator" content="Relearn 7.3.2">
+    <meta name="description" content="CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="File descriptor policies :: crac.org">
+    <meta name="twitter:description" content="CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.">
+    <meta property="og:url" content="http://localhost:1313/extra-info/fd-policies/index.html">
+    <meta property="og:site_name" content="crac.org">
+    <meta property="og:title" content="File descriptor policies :: crac.org">
+    <meta property="og:description" content="CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.">
+    <meta property="og:locale" content="en_us">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Extra info about CRaC">
+    <meta itemprop="name" content="File descriptor policies :: crac.org">
+    <meta itemprop="description" content="CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.">
+    <meta itemprop="wordCount" content="584">
+    <title>File descriptor policies :: crac.org</title>
+    <link href="/css/fontawesome-all.min.css?1738922221" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1738922221" rel="stylesheet"></noscript>
+    <link href="/css/auto-complete.css?1738922221" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1738922221" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1738922221" rel="stylesheet">
+    <link href="/css/theme.css?1738922221" rel="stylesheet">
+    <link href="/css/format-html.css?1738922221" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.min = ``;
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      // variant stuff
+      window.relearn.themevariants = [ 'blue' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        var select = document.querySelector("#R-select-variant");
+        if (select) {
+          select.value = variant;
+        }
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/extra-info/fd-policies/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#files">Files</a></li>
+    <li><a href="#pipes">Pipes</a></li>
+    <li><a href="#sockets">Sockets</a></li>
+    <li><a href="#raw-file-descriptors">Raw file descriptors</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">Coordinated Restore at Checkpoint</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/extra-info/index.html"><span itemprop="name">Extra info about CRaC</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">File descriptor policies</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/extra-info/cpu-features/index.html" title="CPU Features (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-next" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><span class="topbar-control"><i class="fa-fw fas fa-chevron-right"></i></span>
+            </div>
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable extra-info" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="file-descriptor-policies">File descriptor policies</h1>
+
+<p>CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.</p>
+<p>The configuration is set up by pointing system property <code>jdk.crac.resource-policies</code> to a file that consists of several rules separated by three dashes (<code>---</code>). Lines starting with hash sign (<code>#</code>) are ignored. Each rule consists of several <code>key: value</code> pairs. The above is actually a subset of YAML format, so we suggest that you use the <code>.yaml</code> or <code>.yml</code> extension for convenient use in an editor. See an example of this file:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>type: file
+</span></span><span style="display:flex;"><span>path: /path/to/my/file
+</span></span><span style="display:flex;"><span>action: close
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Here is some comment</span>
+</span></span><span style="display:flex;"><span>type: FILE
+</span></span><span style="display:flex;"><span>path: **/*.log
+</span></span><span style="display:flex;"><span>action: reopen</span></span></code></pre></div>
+<p>Each rule has two mandatory properties: <code>type</code> and <code>action</code>, with case-insensitive values. Available types are:</p>
+<ul>
+<li><code>file</code>: a file (or directory) on a local filesystem</li>
+<li><code>pipe</code>: an anonymous pipe - named pipes are handled using the type <code>file</code></li>
+<li><code>socket</code>: network (TCP, UDP, &hellip;) or unix socket</li>
+<li><code>filedescriptor</code>: raw file descriptor that cannot be identified by any of the above</li>
+</ul>
+<p>The order of rules in the file is important; for each file descriptor found open the first matching rule will be applied, any subsequent rules are ignored.</p>
+<h2 id="files">Files</h2>
+<p>As the first example shows, files can be selected using the <code>path</code> property. This supports &lsquo;glob&rsquo; pattern matching - see <code>java.nio.file.FileSystem.getPathMatcher()</code> javadoc for detailed usage.
+These are the possible actions:</p>
+<ul>
+<li><code>error</code>: The default action, just print error and fail the checkpoint.</li>
+<li><code>ignore</code>: Leave handling of the open file to C/R engine (CRIU). This will likely validate and reopen the file on restore.</li>
+<li><code>close</code>: Close the file. An attempt to use it after restore will fail with runtime exception.</li>
+<li><code>reopen</code>: Close the file, and try reopen it (on the same position) after restore.</li>
+</ul>
+<p>Unless the action is <code>error</code>, any file found open will trigger a warning to be printed to the logging system. This can be suppressed with <code>warn: false</code> property.</p>
+<h2 id="pipes">Pipes</h2>
+<p>Anonymous pipes don&rsquo;t have any means to identify, therefore it makes sense to have at most one rule for these. Available actions are <code>error</code>, <code>ignore</code> and <code>close</code> with the same meaning as in case of files.</p>
+<h2 id="sockets">Sockets</h2>
+<p>The rule can be refined using one of these properties:</p>
+<ul>
+<li><code>family</code>: <code>ipv6</code> or <code>inet6</code> for IPv6 sockets, <code>ipv4</code> or <code>inet4</code> for IPv4 sockets, <code>ip</code> or <code>inet</code> for any IPv4/IPv6, <code>unix</code> for Unix domain sockets</li>
+<li><code>localAddress</code> and <code>remoteAddress</code>: <code>*</code> could be used for any bound address</li>
+<li><code>localPort</code> and <code>remotePort</code>: numeric port, <code>*</code> matches any port</li>
+<li><code>localPath</code> and <code>remotePath</code>: for Unix sockets, supports &lsquo;glob&rsquo; pattern matching</li>
+</ul>
+<p>Actions <code>error</code>, <code>ignore</code> and <code>close</code> apply as in the previous cases. It is possible to use action <code>reopen</code>, too - this will close the socket before checkpoint, but the reopening part is not implemented, therefore will result in a runtime exception after restore. Eventually this will be implemented for listening sockets.</p>
+<h2 id="raw-file-descriptors">Raw file descriptors</h2>
+<p>In some cases we might find that file descriptor was created without a matching higher-level object (e.g. <code>FileOutputStream</code>). Such descriptor can be identified either with its numeric value, using <code>value: 123</code>, or matching its native description: <code>regex: .*something.*</code> following the <code>java.util.regex.Pattern.compile()</code> syntax.</p>
+<p>For raw descriptors, only the <code>error</code>, <code>ignore</code> and <code>close</code> actions are available.</p>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/index.html">
+            crac.org
+          </a>
+        </div>
+        <script>
+          window.index_js_url="/searchindex.en.js?1738922221";
+        </script>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1738922221" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1738922221" defer></script>
+        <script src="/js/search.js?1738922221" defer></script>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <ul>
+          <li><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+        </ul>
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-shortcutmenu-home" class="R-sidebarmenu">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/about/index.html"><a class="padding" href="/about/index.html">About CRaC</a><ul id="R-subsections-77102f70526b1c2db0eced54632dc618" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/use/index.html"><a class="padding" href="/use/index.html">Using CRaC</a><ul id="R-subsections-8cb5cd941cf49a6eeef7776eae25bd78" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/examples/index.html"><a class="padding" href="/examples/index.html">Example implementations</a><ul id="R-subsections-2e4187ca04853a7e1382c8d86f7be6fd" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/frameworks/index.html"><a class="padding" href="/frameworks/index.html">Frameworks with CRaC integration</a><ul id="R-subsections-a46d35614961d980fe9849d77710d3a8" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/extra-info/index.html"><a class="padding" href="/extra-info/index.html">Extra info about CRaC</a><ul id="R-subsections-458723ea13e88f314ee657ebd9c529db" class="collapsible-menu">
+            <li class="" data-nav-id="/extra-info/best-practices/index.html"><a class="padding" href="/extra-info/best-practices/index.html">Best Practices</a></li>
+            <li class="" data-nav-id="/extra-info/debugging/index.html"><a class="padding" href="/extra-info/debugging/index.html">Debugging</a></li>
+            <li class="" data-nav-id="/extra-info/cpu-features/index.html"><a class="padding" href="/extra-info/cpu-features/index.html">CPU Features</a></li>
+            <li class="active " data-nav-id="/extra-info/fd-policies/index.html"><a class="padding" href="/extra-info/fd-policies/index.html">File descriptor policies</a></li></ul></li>
+          </ul>
+        </div>
+        <div id="R-shortcutmenu-shortcuts" class="R-sidebarmenu">
+          <div class="nav-title padding">More</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="https://github.com/CRaC"><a class="padding" href="https://github.com/CRaC" target="_blank"><i class='fab fa-github'></i> CRaC Repository</a></li>
+            <li class="" data-nav-id="https://openjdk.org/projects/crac/"><a class="padding" href="https://openjdk.org/projects/crac/" target="_blank"><i class='fab fa-java'></i> OpenJDK Project</a></li>
+            <li class="" data-nav-id="https://wiki.openjdk.org/display/crac"><a class="padding" href="https://wiki.openjdk.org/display/crac" target="_blank"><i class='fab fa-java'></i> OpenJDK Wiki</a></li>
+            <li class="" data-nav-id="https://foojay.io/today/category/crac/"><a class="padding" href="https://foojay.io/today/category/crac/" target="_blank"><i class='fab fa-java'></i> Foojay Blogs</a></li>
+          </ul>
+        </div>
+        <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
+        <div id="R-menu-footer">
+          <hr class="padding default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter">
+          <div id="R-prefooter" class="footerLangSwitch footerVariantSwitch footerVisitedLinks">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/extra-info/fd-policies/index.html" lang="en-us" selected></option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li id="R-select-variant-container" class="footerVariantSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-paint-brush"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-variant">Theme</label>
+                    <select id="R-select-variant" onchange="window.relearn.changeVariant( this.value );">
+                      <option id="R-select-variant-blue" value="blue" selected>Blue</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <script>window.relearn.markVariant();</script>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter showFooter">
+        <p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="/js/clipboard.min.js?1738922221" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1738922221" defer></script>
+    <script src="/js/theme.js?1738922221" defer></script>
+  </body>
+</html>

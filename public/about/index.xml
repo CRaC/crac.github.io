@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>About CRaC :: crac.org</title>
+    <link>http://localhost:1313/about/index.html</link>
+    <description>Several frameworks provide CRaC functionality out-of-the-box.&#xA;What is Coordinated Restore at Checkpoint? Startup Improvement Results</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What is Coordinated Restore at Checkpoint?</title>
+      <link>http://localhost:1313/about/about-crac/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/about/about-crac/index.html</guid>
+      <description>Coordinated Restore at Checkpoint (CRaC) is an OpenJDK feature that provides a fast start and immediate performance for Java applications.&#xA;A Java application and JVM are started from an image in a warmed-up form. The image is created from a running Java instance at arbitrary point of time (“checkpoint”). The start from the image (“restore”) continues from the point when checkpoint was made.&#xA;The restore in general is faster than initialization. After the restore, Java runtime performance is also on-par with the one at the checkpoint. So, after proper warm-up before the checkpoint, restored Java instance is able to deliver the best runtime characteristics immediately.</description>
+    </item>
+    <item>
+      <title>Startup Improvement Results</title>
+      <link>http://localhost:1313/about/results/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/about/results/index.html</guid>
+      <description>CRaC support was implemented in a few frameworks with the following results. The source code can be found in the Projects with CRaC support section.&#xA;The environment laptop with Intel i7-5500U, 16Gb RAM and SSD. Linux kernel 5.7.4-arch1-1 data was collected in container running ubuntu:18.04 based image host operating system: archlinux jdk14-crac build&#xA;How to reproduce To reproduce you need to create a workspace directory and clone along next repositories:&#xA;utils docs (this repo) example-spring-boot example-quarkus example-micronaut example-xml-transform You need to build examples according to the Projects with CRaC support section.</description>
+    </item>
+  </channel>
+</rss>
