@@ -1,5 +1,5 @@
 +++
-title = "Example implementations"
+title = "Example Implementations"
 weight = 15
 +++
 

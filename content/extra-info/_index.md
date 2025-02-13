@@ -1,5 +1,5 @@
 +++
-title = "Extra info about CRaC"
+title = "Extra Info About CRaC"
 weight = 100
 +++
 

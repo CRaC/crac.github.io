@@ -1,5 +1,5 @@
 +++
-title = "File descriptor policies"
+title = "File Descriptor Policies"
 weight = 40
 +++
 
