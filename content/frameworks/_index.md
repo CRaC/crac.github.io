@@ -1,5 +1,5 @@
 +++
-title = 'Frameworks with CRaC integration'
+title = 'Frameworks with CRaC'
 weight = 30
 +++
 
