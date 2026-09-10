@@ -319,6 +319,13 @@ names a file that actually exists in the repository: a wrong prefix, or a page
 whose source moved, gives a link that looks fine and lands on GitHub's 404, and
 nobody clicks their own edit link often enough to notice.
 
+**Counts are retrying assertions, always.** `expect(await x.count())` takes a
+snapshot; `expect(x).not.toHaveCount(0)` and `expect(x.nth(n)).toBeAttached()`
+retry. The search results are hydrated one fragment-fetch at a time *after* the
+status line is set, so a snapshot count there is a race — and it fired. Some
+counts in this suite are over server-rendered markup and were never racy, but
+one rule means nobody has to work out which is which.
+
 ## Trademarks
 
 Java and OpenJDK are trademarks or registered trademarks of Oracle and/or its

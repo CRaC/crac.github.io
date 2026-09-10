@@ -12,7 +12,7 @@ test.describe('table of contents', () => {
 
     const toc = page.locator('.toc');
     await expect(toc).toBeVisible();
-    expect(await toc.locator('a').count()).toBeGreaterThan(2);
+    await expect(toc.locator('a').nth(2)).toBeAttached();
 
     const entries = await toc.locator('a').evaluateAll(
       (els) => els.map((e) => ({ hash: e.hash, text: e.textContent.trim() })));

@@ -117,7 +117,7 @@ test.describe('mobile header', () => {
     // No fly-out to open on a phone: the sub-pages sit indented under their
     // parent, all of them, always.
     const subs = page.locator('.nav-sub');
-    expect(await subs.count()).toBeGreaterThan(2);
+    await expect(subs.nth(2)).toBeAttached();
     for (let i = 0; i < await subs.count(); i++) await expect(subs.nth(i)).toBeVisible();
 
     await expect(page.locator('.nav-item--drawer-search input')).toBeVisible();
