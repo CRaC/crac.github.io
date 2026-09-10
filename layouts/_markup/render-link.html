@@ -2,9 +2,11 @@
        rel="noopener" so the new tab cannot reach back into this one. And a
        site-absolute path is rewritten to carry the base path, so a plain
        `/use/` in prose still works from a subdirectory. */ -}}
-{{- $u := urls.Parse .Destination -}}
-{{- $host := urls.Parse site.BaseURL -}}
-{{- $external := and $u.Host (ne $u.Host $host.Host) -}}
+{{/* External means the author wrote a scheme, not "a different host" — see
+     partials/link-attrs.html for why comparing hosts made the answer depend on
+     the deploy target. */}}
+{{- $dest := printf "%v" .Destination -}}
+{{- $external := or (hasPrefix $dest "//") (strings.Contains (index (split $dest "/") 0) ":") -}}
 {{- $href := partial "site-url.html" .Destination -}}
 <a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}
    {{- if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Text }}</a>

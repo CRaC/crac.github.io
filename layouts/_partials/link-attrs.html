@@ -1,6 +1,19 @@
 {{- /* Returns target="_blank" rel="noopener" as a trusted attribute set when
        the URL leaves this site, and an empty string when it does not.
 
+       "Leaves this site" means THE AUTHOR WROTE A SCHEME — https:, //, mailto:
+       — not "resolves to a different host". Comparing hosts made the answer
+       depend on the deploy target, and that broke in CI: this site links to
+       sibling GitHub Pages sites such as crac.github.io/openjdk-builds/, which
+       are different sites that happen to share a host. Built for crac.org they
+       were external; built for crac.github.io the same links were suddenly
+       internal, while tests/links.mjs still expected a target. A rule whose
+       answer changes with --baseURL is a rule that will disagree with
+       something.
+
+       An internal link is written as a path — "/use/" — which is what every
+       template, menu entry and page of prose here does.
+
        It has to `return` a safeHTMLAttr rather than print: Go's templates
        refuse a partial's plain output in attribute position and emit
        "zgotmplz" instead. safeHTMLAttr on the empty case too, for the same
@@ -11,9 +24,8 @@
        nav.js repeats the pass at runtime for any anchor added later that
        forgets this partial. */ -}}
 {{- $attrs := safeHTMLAttr "" -}}
-{{- $u := urls.Parse . -}}
-{{- $host := urls.Parse site.BaseURL -}}
-{{- if and $u.Host (ne $u.Host $host.Host) -}}
+{{- $u := printf "%v" . -}}
+{{- if or (hasPrefix $u "//") (strings.Contains (index (split $u "/") 0) ":") -}}
   {{- $attrs = safeHTMLAttr `target="_blank" rel="noopener"` -}}
 {{- end -}}
 {{- return $attrs -}}
