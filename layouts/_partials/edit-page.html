@@ -13,8 +13,12 @@
 
        .File is nil for a generated page, which is why it is checked before
        being used. */ -}}
-{{- $skip := slice "/search/" "/sitemap/" "/404.html" -}}
-{{- if and .File (not .IsHome) (not (in $skip .RelPermalink)) -}}
+{{- /* Identity from .File.Path, not .RelPermalink: RelPermalink carries the
+       base path, so on a project site it is "/<repo>/search/" and a comparison
+       against "/search/" silently stops matching — which is exactly how
+       /search/ got an edit link in CI and not locally. */ -}}
+{{- $skip := slice "search.md" "sitemap.md" "404.md" -}}
+{{- if and .File (not .IsHome) (not (in $skip .File.Path)) -}}
   {{- $repo := site.Params.repo -}}
   {{- $branch := site.Params.repoBranch | default "main" -}}
   {{- $path := path.Join "content" .File.Path -}}

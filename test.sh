@@ -52,8 +52,7 @@ npx playwright test --config tests/e2e/playwright.config.mjs
 echo "==> Again, as a project site under a subdirectory"
 build "https://example.github.io/project-path/"
 links
-SITE_PORT=8132 npx playwright test --config tests/e2e/playwright.config.mjs \
-  --grep "renders|index exists|collapse bars"
+SITE_PORT=8132 npx playwright test --config tests/e2e/playwright.config.mjs
 
 # Leave .gate as a normal root build rather than the subdirectory rehearsal.
 # Without this the directory is left with its assets under /project-path/, so

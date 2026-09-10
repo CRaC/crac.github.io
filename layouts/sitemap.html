@@ -35,7 +35,7 @@
       {{ range site.RegularPages }}
         {{ if and (not (in $listed .RelPermalink))
                   (ne .RelPermalink $.RelPermalink)
-                  (not (in (slice "/404.html") .RelPermalink)) }}
+                  (not (in (slice "404.md") (string .File.Path))) }}
           {{ $extra = $extra | append . }}
         {{ end }}
       {{ end }}

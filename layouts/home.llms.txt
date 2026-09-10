@@ -71,7 +71,7 @@ CRaC has to be built into the Java runtime.
 {{- end -}}
 {{- range site.RegularPages -}}
   {{- if and (not (in $seen .RelPermalink))
-             (not (in (slice "/search/" "/404.html") .RelPermalink)) -}}
+             (not (in (slice "search.md" "404.md") (string .File.Path))) -}}
     {{- $seen = $seen | append .RelPermalink -}}
     {{- $lines = $lines | append (printf "- [%s](%s)%s" .Title .Permalink (cond (ne .Description "") (printf ": %s" .Description) "")) -}}
   {{- end -}}

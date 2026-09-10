@@ -237,6 +237,33 @@ that through `--baseURL`. Three rules keep links working there:
 - **CSS asset paths are relative to the stylesheet**, not the site root — the
   sheet is at `<base>/css/…`, so `url("../fonts/x.woff2")` resolves anywhere.
 
+### Two rules that are easy to get wrong
+
+Both of these produced a CI failure that no local run could see, because both
+depended on the deploy target.
+
+**Never decide "external" by comparing hosts.** The rule is now "the author
+wrote a scheme" — `https:`, `//`, `mailto:`. Comparing against
+`site.BaseURL`'s host made the answer change with `--baseURL`: crac.org links
+to sibling GitHub Pages sites such as `crac.github.io/openjdk-builds/`, which
+are separate sites sharing a host. Built for crac.org they were external; built
+for crac.github.io the same links became internal, while `tests/links.mjs`
+still expected a `target`. A rule whose answer changes with the domain will
+disagree with something.
+
+**Never compare `.RelPermalink` against a root-absolute literal.** It carries
+the base path, so on a project site `.RelPermalink` is `/<repo>/search/` and a
+test against `"/search/"` silently stops matching. Use `.File.Path` —
+`search.md` wherever the site is served from. Four places had this: the edit
+link's skip list (which is how `/search/` got an edit link in CI and not
+locally), the human sitemap, `llms.txt`, and — failing silently — which pages
+get the release artwork as their social card.
+
+The subdirectory pass in `test.sh` now runs the **whole** browser suite rather
+than a `--grep` subset. It had been narrowed to the specs that seemed
+base-path-sensitive, which is exactly the guess that let the edit-link failure
+through: there is no knowing in advance which spec a base-path bug shows up in.
+
 ## Machine-readable indexes
 
 - **`sitemap.xml`** — Hugo's, with `/search/` and `/sitemap/` excluded.
