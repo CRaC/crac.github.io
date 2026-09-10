@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}CRaC — Coordinated Restore at Checkpoint{{ else }}{{ .Title }} · CRaC{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  {{ partial "head-assets.html" . }}
+  {{ partial "seo.html" . }}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{ partial "masthead.html" . }}
+
+  {{/* data-pagefind-body puts Pagefind into opt-in indexing mode site-wide:
+       only what carries it is indexed, so the header, the nav and the footer
+       stay out of results without being tagged one by one.
+
+       data-pagefind-filter tags each page with its top-level section so the
+       search page can group results. Root-level pages have no section of their
+       own and file under "project".
+
+       A pager past the first renders the same listing with a different slice
+       below it, so indexing all of them would return one listing several
+       times. Detected from the URL: asking a page for .Paginator CREATES one,
+       which turns every section into a paginated list with /page/1/ URLs it
+       never asked for. */}}
+  {{ $isPager := strings.Contains .RelPermalink "/page/" }}
+  {{ $section := cond (eq .Section "") "project" .Section }}
+  <main id="main"
+        {{- if not $isPager }} data-pagefind-body data-pagefind-filter="section:{{ $section }}"{{ end }}>
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "edit-page.html" . }}
+  {{ partial "footer.html" . }}
+
+  {{/* Two small scripts, both optional: nothing on the page depends on them.
+       The table-of-contents script is loaded only where a TOC is rendered, and
+       both ask the same partial so they cannot disagree. */}}
+  {{ $js := slice "js/nav.js" }}
+  {{ if partial "wants-toc.html" . }}{{ $js = $js | append "js/toc.js" }}{{ end }}
+  {{ range $js }}
+    {{ with resources.Get . | minify | fingerprint }}
+  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+    {{ end }}
+  {{ end }}
+</body>
+</html>

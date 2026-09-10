@@ -1,0 +1,39 @@
+# Frameworks that ship CRaC support, with the mark each project uses for
+# itself. Every version and capability here is taken from the framework's own
+# page in content/frameworks/ — which is in turn taken from the framework's own
+# documentation. Nothing on this list is inferred: a wrong version number here
+# would be a wrong version number on the home page.
+frameworks:
+  - name: "Spring Boot"
+    logo: "images/logo/spring.png"
+    page: "/frameworks/spring-boot/"
+    example: "https://github.com/CRaC/example-spring-boot"
+    since: "3.2"
+    points:
+      - "CRaC support in the framework as of Spring Boot 3.2"
+      - "Spring Framework coordinates bean lifecycle around the checkpoint"
+
+  - name: "Quarkus"
+    logo: "images/logo/quarkus.svg"
+    page: "/frameworks/quarkus/"
+    example: "https://github.com/CRaC/example-quarkus"
+    since: "2.10.0"
+    points:
+      - "Basic CRaC support since Quarkus 2.10.0"
+
+  - name: "Micronaut"
+    logo: "images/logo/micronaut.webp"
+    page: "/frameworks/micronaut/"
+    example: "https://github.com/CRaC/example-micronaut"
+    points:
+      - "A <code>crac</code> feature on micronaut.io/launch"
+      - "Hikari DataSource and Redis coordination"
+      - "Gradle plugin builds the image in one command"
+
+  - name: "AWS Lambda"
+    logo: "images/logo/aws-lambda.webp"
+    page: "/frameworks/aws-lambda/"
+    example: "https://github.com/crac/example-lambda"
+    points:
+      - "CRaC-patched aws-lambda-java-libs"
+      - "Published under <code>io.github.crac.com.amazonaws</code>"

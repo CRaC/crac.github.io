@@ -1,0 +1,23 @@
+# The OpenJDK project this site documents. crac.org is about the JDK project
+# and its API, not about any one vendor's build — see runtimes.yaml for how
+# vendor builds are listed without the site becoming an advert for one.
+name: "Coordinated Restore at Checkpoint"
+short: "CRaC"
+sponsor: "HotSpot Group"
+openjdkPage: "https://openjdk.org/projects/crac/"
+wiki: "https://wiki.openjdk.org/display/crac"
+mailingList: "https://mail.openjdk.org/mailman/listinfo/crac-dev"
+mailingListName: "crac-dev"
+jdkRepo: "https://github.com/openjdk/crac"
+orgRepo: "https://github.com/CRaC"
+apiRepo: "https://github.com/CRaC/org.crac"
+
+# The compatibility API, which is what most applications actually depend on.
+api:
+  artifact: "org.crac:crac"
+  version: "1.5.0"
+  release: "https://github.com/CRaC/org.crac/releases/tag/1.5.0"
+  javadoc: "https://javadoc.io/doc/org.crac/crac"
+  note: >-
+    org.crac mirrors the jdk.crac API and falls back to a no-op on a runtime
+    without CRaC support, so an application can depend on it unconditionally.

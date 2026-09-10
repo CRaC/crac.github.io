@@ -1,0 +1,226 @@
+/* --------------------------------------------------------------------------- */
+/* Site header                                                                 */
+/* --------------------------------------------------------------------------- */
+.masthead {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--slate-900);
+  border-bottom: 1px solid var(--line-dark);
+}
+.masthead__inner {
+  position: relative;      /* the open search popover is positioned against this */
+  display: flex; align-items: center; gap: var(--s-5); min-height: 4.25rem;
+}
+
+/* The wordmark is typographic: CRaC has no logo, and inventing one for a
+   project this site does not own would be worse than setting its name well.
+   The capitalisation is the project's own — CRaC, not CRAC or Crac. */
+.masthead__logo {
+  flex: none; display: block; text-decoration: none;
+  font-weight: 700; font-size: var(--t-md); letter-spacing: -0.02em; color: #fff;
+}
+.masthead__logo span {
+  font-family: var(--font-mono); font-weight: 400; font-size: var(--t-sm);
+  color: var(--ink-invert-faint); margin-left: 0.5rem; letter-spacing: 0;
+}
+.masthead__logo:hover { color: #fff; }
+.masthead__logo:hover span { color: var(--ink-invert-muted); }
+
+.masthead__logo   { order: 1; }
+.masthead__nav    { order: 2; margin-left: auto; }
+.masthead__search { order: 3; margin-left: var(--s-4); flex: none; }
+.nav-toggle       { order: 4; }
+/* Child selector, so this outranks `.nav-item { display: flex }` in the
+   sub-menu block below rather than losing to it on source order — which put a
+   second magnifier in the desktop bar. */
+.masthead__list > .nav-item--drawer-search { display: none; }
+
+.masthead__list {
+  list-style: none; padding: 0;
+  display: flex; align-items: center; gap: var(--s-1); flex-wrap: wrap;
+}
+.masthead__list a:not(.btn) {
+  display: block; padding: 0.4rem 0.65rem; border-radius: var(--radius-sm);
+  font-size: var(--t-sm); font-weight: 500; color: var(--ink-on-dark-link);
+  text-decoration: none; white-space: nowrap;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.masthead__list a:not(.btn):hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+/* The page you are on, and the top-level item that contains it. The section
+   marker is quieter than the page marker, so the pair reads as "you are here,
+   inside this". */
+.masthead__list a:not(.btn)[aria-current] {
+  color: #fff; background: rgba(255, 255, 255, 0.1);
+}
+.masthead__list a:not(.btn)[data-in-section] {
+  color: #fff; box-shadow: inset 0 -2px 0 var(--restore-500);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.nav-toggle {
+  display: none; margin-left: auto; background: transparent;
+  border: 1px solid var(--slate-700); border-radius: var(--radius-sm);
+  color: #fff; font: inherit; font-size: var(--t-sm); font-weight: 600;
+  padding: 0.4rem 0.75rem; cursor: pointer;
+}
+
+/* Header sub-menus ------------------------------------------------------- */
+.nav-item { position: relative; display: flex; align-items: center; }
+
+.nav-sub-toggle {
+  display: grid; place-items: center; width: 1.4rem; height: 1.4rem;
+  margin-left: -0.35rem; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--ink-invert-faint); cursor: pointer;
+}
+.nav-sub-toggle svg { width: 0.8rem; height: 0.8rem; transition: transform 0.15s var(--ease); }
+.nav-sub-toggle:hover { color: #fff; }
+.nav-item--sub:hover .nav-sub-toggle svg,
+.nav-sub-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.nav-sub {
+  position: absolute; top: 100%; left: 0; z-index: 60;
+  min-width: 13rem; margin: 0; padding: var(--s-2); list-style: none;
+  background: var(--slate-800); border: 1px solid var(--line-dark);
+  border-radius: var(--radius); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  /* display rather than opacity: a closed panel is then out of the tab order
+     as well as out of sight, and there is no transition to get stuck. */
+  display: none;
+}
+/* Hover is the mouse path and needs no script. Keyboard focus is NOT handled
+   here: :focus-within was the obvious rule and is wrong, because closing the
+   panel returns focus to the toggle — which sits inside .nav-item--sub, so the
+   rule re-opens it and Escape appears to do nothing. nav.js opens on focus
+   entering the panel instead. */
+.nav-item--sub:hover > .nav-sub,
+.nav-sub[data-open="true"] { display: block; }
+
+.nav-sub a {
+  display: block; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
+  font-size: var(--t-sm); font-weight: 500; color: var(--ink-on-dark-link);
+  text-decoration: none; white-space: nowrap;
+}
+.nav-sub a:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.nav-sub a[aria-current],
+.nav-sub a[data-in-section] { color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+/* A hover-opened menu is a trap for a mouse that drifts off the parent, so
+   bridge the gap between the parent and the panel. */
+.nav-item--sub::after {
+  content: ""; position: absolute; top: 100%; left: 0; width: 100%; height: var(--s-3);
+}
+
+/* Search box ------------------------------------------------------------- */
+/* A magnifier in the bar. Opening it must not disturb the row: an inline field
+   that grows wraps the last nav item onto a second line, and a form stretched
+   across the bar covers the wordmark and reads as a mode change — so the field
+   opens as a popover underneath. In the drawer it is a plain inline field. */
+.site-search { display: flex; align-items: center; gap: var(--s-2); }
+.site-search label { display: contents; }
+.site-search input {
+  /* Positioned against .masthead__inner so the popover clears the bar's bottom
+     edge and lines up with the content column at any bar height. */
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: var(--s-5);            /* matches .wrap's padding, so it lines up */
+  width: 21rem; max-width: calc(100vw - 3rem);
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--slate-700); border-radius: var(--radius);
+  background: var(--slate-800);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  color: #fff; font: inherit; font-size: var(--t-sm);
+  display: none;
+}
+.site-search input::placeholder { color: var(--ink-invert-faint); }
+.site-search[data-open="true"] input { display: block; }
+
+.site-search__toggle {
+  display: grid; place-items: center; width: 2rem; height: 2rem; flex: none;
+  padding: 0; border: 1px solid var(--slate-700); border-radius: var(--radius-sm);
+  background: transparent; color: var(--ink-on-dark-link); cursor: pointer;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease),
+              background-color 0.15s var(--ease);
+}
+.site-search__toggle:hover,
+.site-search[data-open="true"] .site-search__toggle {
+  color: #fff; border-color: var(--slate-500); background: rgba(255, 255, 255, 0.06);
+}
+.site-search__toggle svg { width: 1rem; height: 1rem; }
+
+@media (max-width: 62rem) {
+  .nav-toggle { display: block; }
+  .masthead__search { order: 2; margin-left: auto; }
+  .nav-toggle       { order: 3; }
+  .masthead__nav    { order: 4; }
+  .masthead__nav {
+    display: none; width: 100%; margin-left: 0; padding-bottom: var(--s-4);
+  }
+  .masthead__nav[data-open="true"] { display: block; }
+  .masthead__inner { flex-wrap: wrap; padding-block: var(--s-3); }
+  .masthead__list { flex-direction: column; align-items: stretch; gap: 0; }
+  .masthead__list a:not(.btn) { padding: 0.65rem 0.75rem; }
+  .masthead .btn { margin-left: 0; width: 100%; justify-content: center; }
+
+  /* The bar keeps only the icon — a real submit, so it still reaches the search
+     page without JavaScript — and the drawer carries the open field. */
+  .masthead__search .site-search input { display: none; }
+  .masthead__list > .nav-item--drawer-search { display: block; margin: var(--s-3) 0; }
+  .nav-item--drawer-search .site-search input {
+    position: static; display: block; width: 100%; max-width: none;
+    box-shadow: none; background: rgba(255, 255, 255, 0.06);
+  }
+  .nav-item--drawer-search .site-search__toggle { display: none; }
+
+  /* In the stacked menu there is no room to fly out and no reason to hide:
+     sub-pages sit indented under their parent, always visible. */
+  .nav-item { display: block; }
+  .nav-sub-toggle { display: none; }
+  .nav-sub {
+    position: static; display: block; min-width: 0;
+    padding: 0 0 var(--s-2) var(--s-4);
+    background: transparent; border: 0; border-left: 1px solid var(--line-dark);
+    border-radius: 0; box-shadow: none; margin-left: 0.75rem;
+  }
+  .nav-sub a { white-space: normal; font-weight: 400; }
+  .nav-item--sub::after { display: none; }
+}
+
+/* Footer ----------------------------------------------------------------- */
+.footer { background: var(--slate-950); color: var(--ink-invert-muted); padding-block: var(--s-8) var(--s-6); }
+.footer a { color: var(--ink-on-dark-link); text-decoration: none; }
+.footer a:hover { color: #fff; text-decoration: underline; }
+
+.footer__top {
+  display: grid; gap: var(--s-6) var(--s-5); grid-template-columns: 1fr;
+  padding-bottom: var(--s-7); border-bottom: 1px solid var(--line-dark);
+}
+@media (min-width: 34rem) {
+  .footer__top { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { grid-column: 1 / -1; }
+}
+@media (min-width: 62rem) {
+  .footer__top { gap: var(--s-7); grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+  .footer__brand { grid-column: auto; }
+}
+.footer__brand strong { display: block; color: #fff; font-size: var(--t-md); margin-bottom: var(--s-3); }
+.footer__brand p { font-size: var(--t-sm); max-width: 24rem; }
+
+.footer__col h2 {
+  font-size: var(--t-xs); font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--ink-invert-faint); margin-bottom: var(--s-4); font-weight: 500;
+}
+.footer__col ul { list-style: none; padding: 0; display: grid; gap: var(--s-2); }
+.footer__col a { font-size: var(--t-sm); }
+
+.footer__bottom {
+  padding-top: var(--s-5); display: flex; flex-wrap: wrap;
+  gap: var(--s-4) var(--s-6); align-items: center; justify-content: space-between;
+  font-size: var(--t-xs); line-height: 1.6;
+}
+.footer__bottom p { max-width: 52rem; color: var(--ink-invert-faint); }
+.footer__utility {
+  list-style: none; padding: 0; display: flex; flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4); width: 100%;
+  font-family: var(--font-mono); letter-spacing: 0.04em;
+}
+.footer__utility a { color: var(--ink-invert-faint); }
+.footer__utility a:hover { color: #fff; }

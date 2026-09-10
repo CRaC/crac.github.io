@@ -1,0 +1,24 @@
+{{- /* Turn a site-absolute path into one that carries the base path.
+
+       Content and front matter write plain paths — `/use/`, `/about/#results`
+       — because that is what is readable. On a GitHub Pages project site the
+       site lives under /<repo>/, so a root-absolute link leaves it and 404s.
+
+       Hugo's own helpers do not save you: `relURL` treats a LEADING SLASH as
+       "already absolute" and returns the path untouched, and `absURL` on such
+       a path drops the base too. The slash has to come off first, which is the
+       whole job of this partial.
+
+       The fragment is split off before relURL sees it, so `#results` survives
+       instead of being escaped into the path. Anything already absolute
+       (http…, //…, mailto:) is returned unchanged. */ -}}
+{{- $raw := . -}}
+{{- $out := $raw -}}
+{{- if and (hasPrefix $raw "/") (not (hasPrefix $raw "//")) -}}
+  {{- $parts := split $raw "#" -}}
+  {{- $path := index $parts 0 -}}
+  {{- $frag := "" -}}
+  {{- if gt (len $parts) 1 }}{{ $frag = printf "#%s" (index $parts 1) }}{{ end -}}
+  {{- $out = printf "%s%s" (relURL (strings.TrimPrefix "/" $path)) $frag -}}
+{{- end -}}
+{{- return $out -}}

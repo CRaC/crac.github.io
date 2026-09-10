@@ -1,0 +1,25 @@
+{{- /* The header search box, and the same box again in the mobile drawer.
+
+       Two search landmarks with the same accessible name cannot be told apart
+       in a landmark list, so the caller names the placement.
+
+       In the bar it is a magnifier and the field opens as a popover beneath it,
+       so the row never changes size. The magnifier is a real submit, so with no
+       JavaScript the first click still lands on the search page rather than
+       doing nothing. In the drawer the field is always open. */ -}}
+{{- $label := "Search" -}}
+{{- if reflect.IsMap . }}{{ with .label }}{{ $label = . }}{{ end }}{{ end -}}
+<form class="site-search" role="search" aria-label="{{ $label }}"
+      action="{{ "search/" | relURL }}" data-search>
+  <label>
+    <span class="visually-hidden">Search crac.org</span>
+    <input type="search" name="q" placeholder="Search" autocomplete="off">
+  </label>
+  <button class="site-search__toggle" type="submit" data-search-toggle
+          aria-expanded="false" aria-label="Search crac.org" title="Search crac.org">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/>
+    </svg>
+  </button>
+</form>

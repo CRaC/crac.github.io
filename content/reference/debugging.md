@@ -1,8 +1,12 @@
-+++
-title = "Debugging"
-weight = 20
-+++
-
+---
+title: "Debugging failures"
+weight: 20
+eyebrow: "Reference"
+description: "Diagnosing a checkpoint or restore that did not work."
+# This section was /extra-info/ and is deployed there, so the old path
+# keeps working rather than 404ing for anyone who linked it.
+aliases: ["/extra-info/debugging/"]
+---
 ## Debugging checkpoint and restore failures
 
 This guide will help you identify common problems when the checkpoint operation does not work.

@@ -1,0 +1,23 @@
+{{/* One stylesheet, concatenated in load order, minified and fingerprinted. */}}
+{{ $files := slice "css/00-fonts.css" "css/01-tokens.css" "css/02-base.css"
+                   "css/03-chrome.css" "css/04-hero.css" "css/05-components.css"
+                   "css/06-code.css" }}
+{{ $sheets := slice }}
+{{ range $files }}
+  {{ with resources.Get . }}
+    {{ $sheets = $sheets | append . }}
+  {{ else }}
+    {{ warnf "stylesheet %q is missing from assets/" . }}
+  {{ end }}
+{{ end }}
+{{ with $sheets | resources.Concat "css/crac.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{ end }}
+<link rel="preload" href="{{ "fonts/ibm-plex-sans-normal-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{/* No logo file exists for CRaC, so the favicon is drawn rather than loaded:
+     the project's initial on the site's own slate. */}}
+<link rel="icon" href="data:image/svg+xml,{{ (printf `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%%23161a22"/><text x="32" y="44" font-family="ui-monospace,monospace" font-size="34" font-weight="600" fill="%%230faa77" text-anchor="middle">C</text></svg>` ) | safeURL }}">
+<meta name="theme-color" content="#161a22">
+{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="CRaC">
+{{ end }}

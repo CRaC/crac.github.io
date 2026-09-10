@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#161a22"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#0faa77"/>
+  <text x="80" y="140" font-family="IBM Plex Sans, Segoe UI, sans-serif" font-size="26" fill="#8d97a6" letter-spacing="5">COORDINATED RESTORE AT CHECKPOINT</text>
+  <text x="80" y="252" font-family="IBM Plex Sans, Segoe UI, sans-serif" font-size="104" font-weight="700" fill="#ffffff">CRaC</text>
+  <text x="80" y="360" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="60" fill="#a7b0bd">3898 ms</text>
+  <text x="80" y="410" font-family="IBM Plex Sans, Segoe UI, sans-serif" font-size="26" fill="#8d97a6">cold start becomes</text>
+  <text x="80" y="520" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="86" font-weight="600" fill="#0faa77">38 ms</text>
+  <text x="80" y="576" font-family="IBM Plex Sans, Segoe UI, sans-serif" font-size="26" fill="#8d97a6">on restore &#183; Spring Boot &#183; measured by the project</text>
+  <text x="1120" y="576" text-anchor="end" font-family="ui-monospace, monospace" font-size="24" fill="#5c6675">crac.org</text>
+</svg>

@@ -1,0 +1,8 @@
+{{- /* A call to action. Replaces the old theme's {{% button %}}: same `href`
+       argument, and `style`/`icon` are accepted and ignored, because the old
+       theme's colour-per-button vocabulary said nothing this site needs to say.
+
+       A site-absolute href is run through site-url.html so a plain "/use/"
+       still works when the site is served from a subdirectory. */ -}}
+{{- $href := partial "site-url.html" (.Get "href" | default "#") -}}
+<a class="btn btn--primary btn--sm" href="{{ $href }}" {{ partial "link-attrs.html" (.Get "href") }}>{{ .Inner }}</a>

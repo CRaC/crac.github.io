@@ -1,8 +1,9 @@
-+++
-title = "Jetty"
-weight = 20
-+++
-
+---
+title: "Jetty"
+weight: 20
+eyebrow: "Example"
+description: "A Jetty server that checkpoints and restores."
+---
 ## Step-by-step CRaC support for a Jetty app
 
 A program can be restored in a different environment compared to the one where it was checkpointed.
@@ -16,6 +17,8 @@ This document describes how to implement CRaC support on an example of a sample 
 
 Full source code for this section can be found in [example-jetty](https://github.com/org-crac/example-jetty) repo.
 Commit history corresponds to the steps of the tutorial with greater details.
+
+## The starting point
 
 A simple Jetty application will serve as a starting point:
 
@@ -46,6 +49,8 @@ public class App extends AbstractHandler
 
 The main thread creates an instance of `ServerManager` that starts managing a jetty instance.
 The thread then exits, leaving the jetty instance a single non-daemon thread.
+
+## Building and starting it
 
 Build and start the example.
 Java argument `-XX:CRaCCheckpointTo=PATH` enables CRaC and defines a path to store the image.
@@ -79,6 +84,8 @@ $ curl localhost:8080
 Hello World
 ```
 
+## Taking the checkpoint
+
 Use `jcmd` to trigger checkpoint:
 
 ```sh
@@ -102,6 +109,8 @@ jdk.crac.impl.CheckpointOpenSocketException: tcp6 localAddr :: localPort 8080 re
         at java.base/jdk.crac.Core.lambda$checkpointRestoreInternal$0(Core.java:194)
         at java.base/java.lang.Thread.run(Thread.java:832)
 ```
+
+## Coordinating the open socket
 
 Simpliest way to ensure the socket is closed is to shutdown the Jetty instance when checkpoint is started and start the instance again after restore.
 For this:
@@ -133,6 +142,8 @@ There is a global `Context` that can be used as default choice.
             Core.getGlobalContext().register(this);
         }
     ```
+
+## The non-daemon thread
 
 This example is a special by presence of a single non-daemon thread owned by Jetty that keeps JVM from exit.
 When `server.stop()` is called the thread exits and so does the JVM instead of the checkpoint.

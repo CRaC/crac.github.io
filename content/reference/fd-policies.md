@@ -1,8 +1,12 @@
-+++
-title = "File Descriptor Policies"
-weight = 40
-+++
-
+---
+title: "File descriptor policies"
+weight: 40
+eyebrow: "Reference"
+description: "Telling the runtime what to do with each open file descriptor at checkpoint time."
+# This section was /extra-info/ and is deployed there, so the old path
+# keeps working rather than 404ing for anyone who linked it.
+aliases: ["/extra-info/fd-policies/"]
+---
 CRaC requires that the application closes all open files, network connections etc. - on Linux these are represented as file descriptors. However, it might be difficult to alter the application to properly coordinate with the checkpoint, e.g. due to a code in a library you cannot modify. In those cases CRaC offers a limited handling via configuration. Note that this applies only to file descriptors opened through JDK API; anything opened through native code cannot be handled this way.
 
 The configuration is set up by pointing system property `jdk.crac.resource-policies` to a file that consists of several rules separated by three dashes (`---`). Lines starting with hash sign (`#`) are ignored. Each rule consists of several `key: value` pairs. The above is actually a subset of YAML format, so we suggest that you use the `.yaml` or `.yml` extension for convenient use in an editor. See an example of this file:

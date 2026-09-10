@@ -1,0 +1,16 @@
+<section class="page-head">
+  <div class="wrap page-head__inner">
+    {{ partial "breadcrumbs.html" . }}
+    {{ with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.lede }}<p>{{ . }}</p>{{ else }}{{ with .Description }}<p>{{ . }}</p>{{ end }}{{ end }}
+    {{ with .Params.actions }}
+    <div class="btn-row">
+      {{ range $i, $a := . }}
+      {{ $href := partial "site-url.html" $a.url }}
+      <a class="btn {{ if eq $i 0 }}btn--primary{{ else }}btn--on-dark{{ end }}" href="{{ $href }}" {{ partial "link-attrs.html" $a.url }}>{{ $a.label }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>

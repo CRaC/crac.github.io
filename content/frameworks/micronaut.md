@@ -1,8 +1,9 @@
-+++
-title = "Micronaut"
-weight = 20
-+++
-
+---
+title: "Micronaut"
+weight: 20
+eyebrow: "Framework"
+description: "The Micronaut CRaC module and its build plugin."
+---
 You can just add `crac` feature at https://micronaut.io/launch!
 
 * [Micronaut CRaC Module](https://micronaut-projects.github.io/micronaut-crac/latest/guide)

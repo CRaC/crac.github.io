@@ -1,0 +1,20 @@
+{{- /* Whether a page gets a table of contents.
+
+       A rule rather than a per-page flag, because a flag gets forgotten: a
+       page with sections and no way to navigate them looks finished, and
+       nothing in the front matter says otherwise.
+
+       COUNT WHAT THE TOC WILL ACTUALLY CONTAIN. markup.tableOfContents renders
+       h2 AND h3, so counting h2 alone called /reference/debugging/ — one h2
+       and five h3s, a six-entry table — too thin to bother with.
+
+       Two entries is the threshold. One is not a table of contents, it is a
+       link; two is short but still tells a reader what the page holds. Only
+       CONTENT headings count, so a template's section headings never trigger
+       it.
+
+       `toc:` in front matter still wins in both directions. */ -}}
+{{- $entries := len (findRE "<h[23][ >]" .Content) -}}
+{{- $wants := ge $entries 2 -}}
+{{- if isset .Params "toc" }}{{ $wants = .Params.toc }}{{ end -}}
+{{- return $wants -}}

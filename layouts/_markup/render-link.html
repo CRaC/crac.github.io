@@ -1,0 +1,10 @@
+{{- /* Markdown links. Anything pointing off this site opens in a new tab, with
+       rel="noopener" so the new tab cannot reach back into this one. And a
+       site-absolute path is rewritten to carry the base path, so a plain
+       `/use/` in prose still works from a subdirectory. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $host := urls.Parse site.BaseURL -}}
+{{- $external := and $u.Host (ne $u.Host $host.Host) -}}
+{{- $href := partial "site-url.html" .Destination -}}
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}
+   {{- if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Text }}</a>

@@ -1,8 +1,9 @@
-+++
-title = "Quarkus Super Heroes"
-weight = 25
-+++
-
+---
+title: "Quarkus Super Heroes"
+weight: 25
+eyebrow: "Example"
+description: "The Quarkus Super Heroes sample application with CRaC."
+---
 This guide will walk you through the process of taking an existing non-trivial application and getting it CRaC-able. The [workshop](https://quarkus.io/quarkus-workshops/super-heroes/spine.html) describes the application, please refer there for any details. We'll start right away with the result of that workshop:
 
 1. Make sure that JAVA_HOME points to OpenJDK CRaC JDK, and ensure that CRaC works (CRIU has correct permissions etc).
@@ -98,7 +99,7 @@ jdk.crac.CheckpointException
 		... 2 more
 ```
 
-In a framework like Quarkus it is not up to the application to handle this, framework should listen to CRaC notifications and close/reopen them. This guide won't describe how these problems can be identified and fixed, please see [debugging guide](debugging.md) for that. Instead we will use version of dependencies that has these issues handled.
+In a framework like Quarkus it is not up to the application to handle this, framework should listen to CRaC notifications and close/reopen them. This guide won't describe how these problems can be identified and fixed, please see [debugging guide](/reference/debugging/) for that. Instead we will use version of dependencies that has these issues handled.
 
 ## Replacing CRaC non-compatible artifacts
 

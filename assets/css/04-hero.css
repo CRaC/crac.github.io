@@ -1,0 +1,141 @@
+/* --------------------------------------------------------------------------- */
+/* Hero                                                                        */
+/* Type-led rather than image-led. CRaC has no artwork, and the project's own   */
+/* claim is a number, so the number is the picture.                            */
+/* --------------------------------------------------------------------------- */
+.hero {
+  position: relative; background: var(--slate-900); color: var(--ink-invert);
+  overflow: hidden; padding-block: var(--s-8) calc(var(--s-8) + 2rem);
+}
+.hero::before {
+  /* A single cool wash, off to the right, so the field is not flat. It is not
+     a gradient blob behind the text: the text sits on plain slate. */
+  content: ""; position: absolute; inset: -30% -20% auto auto;
+  width: 46rem; height: 46rem;
+  background: radial-gradient(circle at 60% 45%,
+    rgba(15, 170, 119, 0.13) 0%, rgba(61, 79, 209, 0.09) 42%, transparent 70%);
+  pointer-events: none;
+}
+.hero__inner { position: relative; max-width: 46rem; }
+.hero h1 { font-size: var(--t-hero); color: #fff; }
+.hero__lede { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-5); max-width: 36rem; }
+.hero .btn-row { margin-top: var(--s-6); }
+.hero__meta {
+  margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  font-family: var(--font-mono); font-size: var(--t-xs); letter-spacing: 0.04em;
+  color: var(--ink-invert-faint);
+}
+.hero__meta strong { color: #fff; font-weight: 500; }
+
+/* Page head for inner pages — same family, a quarter of the volume. */
+.page-head {
+  background: var(--slate-900); color: var(--ink-invert);
+  padding-block: var(--s-7); position: relative; overflow: hidden;
+}
+.page-head__inner { position: relative; max-width: 46rem; }
+.page-head h1 { color: #fff; }
+.page-head p { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-4); max-width: 38rem; }
+.page-head .btn-row { margin-top: var(--s-6); }
+
+/* Breadcrumbs ------------------------------------------------------------ */
+/* Above the eyebrow and quieter than it: the eyebrow says what kind of thing
+   the page is, the trail says where it sits. */
+.crumbs { margin-bottom: var(--s-4); }
+.crumbs ol {
+  list-style: none; padding: 0; display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.15rem 0.5rem; font-size: var(--t-xs); line-height: 1.5;
+}
+.crumbs li { display: flex; align-items: center; gap: 0.5rem; }
+.crumbs li + li::before { content: "/"; color: var(--slate-500); }
+.crumbs a { color: var(--ink-invert-faint); text-decoration: none; }
+.crumbs a:hover { color: #fff; text-decoration: underline; }
+.crumbs [aria-current] { color: var(--ink-invert-muted); }
+
+/* --------------------------------------------------------------------------- */
+/* SIGNATURE: the collapse bars                                                */
+/*                                                                             */
+/* One row per framework, drawn AT TRUE SCALE from the project's own measured   */
+/* data (static/data/startup.data, now data/startup.yaml). At true scale a      */
+/* 38 ms restore beside a 3898 ms cold start is a 1% sliver — and that sliver   */
+/* IS the argument. A log axis would make the bars comparable and the point     */
+/* invisible, which is the usual way this chart gets drawn and the reason it    */
+/* never persuades anyone.                                                     */
+/*                                                                             */
+/* Colour carries the meaning: --cold for the cold start, --restore for after   */
+/* the restore, used nowhere else on the site.                                 */
+/* --------------------------------------------------------------------------- */
+.collapse {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  padding: var(--s-6);
+  margin-top: -2rem;          /* overlaps the hero, so it reads as its evidence */
+  position: relative; z-index: 2;
+}
+.collapse__head {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  align-items: baseline; justify-content: space-between; margin-bottom: var(--s-5);
+}
+.collapse__head h2 { font-size: var(--t-lg); }
+.collapse__legend {
+  display: flex; flex-wrap: wrap; gap: var(--s-4);
+  font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-faint);
+}
+.collapse__legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.collapse__legend i { width: 0.75rem; height: 0.75rem; border-radius: 2px; display: block; }
+.collapse__legend i.cold { background: var(--cold); }
+.collapse__legend i.restore { background: var(--restore-500); }
+
+.collapse__rows { display: grid; gap: var(--s-5); }
+.collapse__row { display: grid; grid-template-columns: 9rem 1fr; gap: var(--s-4); align-items: center; }
+.collapse__name { font-weight: 600; font-size: var(--t-sm); }
+.collapse__name span {
+  display: block; font-family: var(--font-mono); font-size: var(--t-xs);
+  font-weight: 400; color: var(--restore-700);
+}
+
+.collapse__track { min-width: 0; }
+/* Width is set inline, as this row's cold time against the slowest in the set,
+   so the cold starts are comparable with each other as well as with their own
+   restores. min-width keeps the fastest row from vanishing. */
+.collapse__bar {
+  position: relative; height: 1.5rem; border-radius: 3px;
+  background: var(--cold); overflow: hidden; min-width: 3rem;
+}
+.collapse__bar i {
+  position: absolute; inset: 0 auto 0 0; display: block;
+  background: var(--restore-500); border-radius: 3px 0 0 3px;
+  /* A restore under about 1% would round to nothing, so it keeps a 2px floor —
+     visible as a sliver rather than absent. The number beside it carries the
+     precision; the bar only has to show which end of the scale it is on. */
+  min-width: 2px;
+}
+.collapse__figures {
+  display: flex; justify-content: space-between; gap: var(--s-4);
+  font-family: var(--font-mono); font-size: var(--t-xs); margin-top: var(--s-2);
+}
+.collapse__figures b { font-weight: 500; }
+.collapse__figures .restore { color: var(--restore-700); }
+.collapse__figures .cold { color: var(--ink-faint); }
+
+.collapse__note {
+  margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--line);
+  font-size: var(--t-xs); line-height: 1.6; color: var(--ink-faint);
+}
+.collapse__note a { color: var(--ink-muted); }
+
+@media (max-width: 40rem) {
+  .collapse { padding: var(--s-5); margin-top: -1.5rem; }
+  .collapse__row { grid-template-columns: 1fr; gap: var(--s-2); }
+}
+
+/* The single headline figure, used where one number is the whole point. */
+.figure {
+  font-family: var(--font-mono); font-size: var(--t-figure); font-weight: 500;
+  letter-spacing: -0.04em; line-height: 1; color: var(--restore-600);
+}
+.figure sup { font-size: 0.4em; font-weight: 400; letter-spacing: 0; top: -1.2em; }
+.figure__label { font-size: var(--t-sm); color: var(--ink-muted); margin-top: var(--s-3); }
+.band--dark .figure { color: var(--restore-300); }
+.band--dark .figure__label { color: var(--ink-invert-muted); }

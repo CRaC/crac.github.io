@@ -1,0 +1,30 @@
+{{- /* Which state a top-level nav item is in for the page being rendered.
+       Takes a dict of `page` and `entry`, returns "page", "section" or "".
+
+       Hugo's own IsMenuCurrent/HasMenuCurrent only know about entries that
+       name a page, so they miss a page that sits outside the tree its menu
+       entry implies. Both cases are covered by testing the URL of the entry
+       and of each of its children against the current page.
+
+       Pass `exact` for a sub-menu entry: those are leaves, and the one that
+       repeats its parent ("Overview") would otherwise match every sibling
+       below it. */ -}}
+{{- $page := .page -}}
+{{- $e := .entry -}}
+{{- $exact := .exact | default false -}}
+{{- $here := $page.RelPermalink -}}
+{{- $state := "" -}}
+
+{{- if and $e.URL (eq $here $e.URL) -}}
+  {{- $state = "page" -}}
+{{- else if not $exact -}}
+  {{- $urls := slice -}}
+  {{- with $e.URL }}{{ $urls = $urls | append . }}{{ end -}}
+  {{- range $e.Children }}{{ with .URL }}{{ $urls = $urls | append . }}{{ end }}{{ end -}}
+  {{- range $urls -}}
+    {{- if and (ne . "/") (or (eq $here .) (hasPrefix $here .)) -}}
+      {{- $state = "section" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $state -}}

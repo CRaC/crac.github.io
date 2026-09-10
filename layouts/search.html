@@ -1,0 +1,160 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="wrap page-head__inner">
+    {{ partial "breadcrumbs.html" . }}
+    <p class="eyebrow">Search</p>
+    <h1>Search crac.org</h1>
+    <form class="search-page__form" role="search" id="search-page-form">
+      <label>
+        <span class="visually-hidden">Search crac.org</span>
+        <input type="search" name="q" id="search-page-input"
+               placeholder="Try “checkpoint”, “file descriptor”, “beforeCheckpoint”"
+               autocomplete="off" autofocus>
+      </label>
+      <button class="btn btn--primary" type="submit">Search</button>
+    </form>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <p class="search-page__status" id="search-page-status" aria-live="polite"></p>
+    <div id="search-page-results"></div>
+  </div>
+</section>
+
+{{/*
+  No search service and no API key: Pagefind reads the already-built HTML in
+  public/ and writes a static, chunked index next to it, which this page loads
+  client-side. The index is produced by the "Build search index" step in
+  .github/workflows/hugo.yaml, right after the Hugo build.
+
+  Local gotcha: `hugo server` alone has no index — Pagefind only ever reads
+  built output — so this says so rather than failing silently. To try it
+  locally: `hugo && npx -y pagefind --site public && npx -y serve public`.
+
+  What gets indexed is decided in baseof.html: data-pagefind-body on <main>
+  puts Pagefind in opt-in mode, so the header, nav and footer never appear in
+  a result, and data-pagefind-filter carries each page's section so results
+  can be grouped under it.
+*/}}
+<script>
+(function () {
+  var input   = document.getElementById('search-page-input');
+  var status  = document.getElementById('search-page-status');
+  var results = document.getElementById('search-page-results');
+  var pagefindUrl = {{ "pagefind/pagefind.js" | relURL }};
+
+  // The order sections appear in, and what they are called. A section not
+  // named here still shows, after these, alphabetically — so adding a content
+  // section does not silently hide its pages.
+  var ORDER  = ['use', 'frameworks', 'examples', 'reference', 'about', 'project'];
+  var LABELS = {
+    use: 'Using CRaC', frameworks: 'Frameworks', examples: 'Examples',
+    reference: 'Reference', about: 'The project',
+    // Root-level pages: the home page and the utility pages.
+    project: 'Elsewhere on the site'
+  };
+
+  var pagefindPromise = import(pagefindUrl).catch(function () { return null; });
+
+  // Bumped per query so a slow search cannot render over a newer one.
+  var runId = 0;
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function labelFor(key) {
+    return LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1);
+  }
+
+  function renderResult(d) {
+    // `excerpt` is Pagefind's own markup, with the match already marked up;
+    // everything else is data and gets escaped.
+    return '<article class="search-result">' +
+      '<h3><a href="' + escapeHtml(d.url) + '">' +
+        escapeHtml(d.meta && d.meta.title ? d.meta.title : d.url) +
+      '</a></h3>' +
+      '<p>' + d.excerpt + '</p>' +
+      '<p class="search-result__url">' + escapeHtml(d.url) + '</p>' +
+      '</article>';
+  }
+
+  function renderGroups(groups) {
+    results.innerHTML = groups.map(function (g) {
+      return '<section class="search-page__section">' +
+        '<h2>' + escapeHtml(g.label) +
+        ' <span class="search-page__count">' + g.items.length + '</span></h2>' +
+        g.items.map(renderResult).join('') +
+        '</section>';
+    }).join('');
+  }
+
+  function group(datas) {
+    var by = {};
+    datas.forEach(function (d) {
+      var raw = (d.filters && d.filters.section && d.filters.section[0]) || 'platform';
+      (by[raw] || (by[raw] = [])).push(d);
+    });
+    return Object.keys(by).sort(function (a, b) {
+      var ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
+      if (ia === -1) ia = ORDER.length;
+      if (ib === -1) ib = ORDER.length;
+      return ia !== ib ? ia - ib : a.localeCompare(b);
+    }).map(function (k) {
+      return { key: k, label: labelFor(k), items: by[k] };
+    });
+  }
+
+  var debounce;
+  function runSearch(query) {
+    clearTimeout(debounce);
+    runId++;
+    if (!query) { results.innerHTML = ''; status.textContent = ''; return; }
+
+    debounce = setTimeout(function () {
+      var id = ++runId;
+      status.textContent = 'Searching…';
+      pagefindPromise.then(function (pagefind) {
+        if (!pagefind) {
+          status.textContent = 'Search is not available on this preview — the index is built during deploy.';
+          return;
+        }
+        return pagefind.search(query).then(function (search) {
+          if (id !== runId) return;
+          var total = search.results.length;
+          if (!total) {
+            status.textContent = 'Nothing matched “' + query + '”.';
+            results.innerHTML = '';
+            return;
+          }
+          status.textContent = total + (total === 1 ? ' page' : ' pages') + ' matched “' + query + '”';
+          // The site is small enough to hydrate every hit, so there is no
+          // "show more" to get wrong. Revisit if it grows past a hundred pages.
+          return Promise.all(search.results.map(function (r) { return r.data(); }))
+            .then(function (datas) {
+              if (id !== runId) return;
+              renderGroups(group(datas));
+            });
+        });
+      }).catch(function () {
+        status.textContent = 'Something went wrong running that search.';
+      });
+    }, 150);
+  }
+
+  input.addEventListener('input', function () { runSearch(input.value.trim()); });
+  document.getElementById('search-page-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    runSearch(input.value.trim());
+  });
+
+  // The header box submits here as a plain GET, so honour ?q=.
+  var initial = new URLSearchParams(window.location.search).get('q');
+  if (initial) { input.value = initial; runSearch(initial); }
+})();
+</script>
+{{ end }}

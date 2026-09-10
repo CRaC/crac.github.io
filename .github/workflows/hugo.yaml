@@ -1,74 +1,120 @@
-# Sample workflow for building and deploying a Hugo site to GitHub Pages
-name: Deploy Hugo site to Pages
+name: Build and deploy to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [main]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-# Default to bash
 defaults:
   run:
     shell: bash
 
+env:
+  HUGO_VERSION: 0.165.0
+
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.128.0
+    # A new commit on the same branch cancels the build still running for the
+    # older one. The build is the expensive half — Hugo, Pagefind, a browser
+    # download and the browser checks — and its result is about to be thrown
+    # away anyway.
+    concurrency:
+      group: build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
-      - name: Install Hugo CLI
+      - name: Install Hugo
         run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
-      - name: Install Dart Sass
-        run: sudo snap install dart-sass
-      - name: Checkout
-        uses: actions/checkout@v4
+          curl -sSL -o hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i hugo.deb
+
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
-      - name: Setup Pages
+          fetch-depth: 0
+
+      - uses: actions/configure-pages@v6
         id: pages
-        uses: actions/configure-pages@v5
-      - name: Install Node.js dependencies
-        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
-      - name: Build with Hugo
-        env:
-          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
-          HUGO_ENVIRONMENT: production
+
+      - name: Build
+        # baseURL comes from the Pages configuration, so a project-site preview
+        # under /<repo>/ and the eventual crac.org both resolve correctly.
         run: |
           hugo \
+            --gc \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+
+      # No search service and no API key: Pagefind crawls the HTML Hugo just
+      # wrote and puts a static, chunked index beside it in public/pagefind/,
+      # which layouts/search.html loads client-side. What gets indexed is set
+      # by data-pagefind-body and data-pagefind-filter in baseof.html.
+      - name: Build search index (Pagefind)
+        run: npx -y pagefind@1 --site public
+
+      # The gate. Runs against the public/ directory that is about to BECOME
+      # the deploy, so a broken build stops here rather than after it has
+      # replaced the live site.
+      #
+      # Static half: every internal link resolves, every external link carries
+      # target/rel in the HTML, every `## ` heading in a content file survived
+      # into the built page, and no page carries a livereload script. --remote
+      # also asks whether the upstream URLs in data/ still answer — the OpenJDK
+      # pages, the repositories, the runtime builds, the framework examples.
+      - name: Check links
+        run: node tests/links.mjs --remote
+
+      # The browser half. Everything above is static analysis; this is the only
+      # thing that can tell whether the site WORKS — search is filled in
+      # client-side by Pagefind, the menus and the table of contents exist only
+      # after JavaScript runs, and all of those fail silently with a 200 and a
+      # full-looking page.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          # Keyed on package-lock.json, which is committed for exactly this
+          # reason — and because `npm ci` refuses to run without one.
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser checks
+        run: npx playwright test --config tests/e2e/playwright.config.mjs
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
-  # Deployment job
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # Deploys are NOT cancelled, and this group is deliberately separate from
+    # the build's. Cancelling a publish that has already started can leave
+    # Pages serving half of it; a superseded deploy costs a few seconds.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,15 @@
+{
+  "name": "crac-org",
+  "private": true,
+  "description": "Validation for the built Hugo site. The site itself has no Node build step; Pagefind and Playwright are both invoked with npx.",
+  "type": "module",
+  "scripts": {
+    "build": "hugo --gc --minify && npx -y pagefind@1 --site public",
+    "test": "./test.sh",
+    "test:links": "node tests/links.mjs --remote",
+    "test:e2e": "playwright test --config tests/e2e/playwright.config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.0"
+  }
+}

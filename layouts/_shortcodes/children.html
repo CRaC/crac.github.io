@@ -1,0 +1,11 @@
+{{- /* Lists the pages under this one. Replaces the old theme's
+       {{% children %}}, which took `sort`; this always sorts by weight, which
+       is what every call site asked for anyway. */ -}}
+<ul class="tiles">
+  {{ range .Page.Pages.ByWeight }}
+  <li><a class="tile" href="{{ .RelPermalink }}">
+    <strong>{{ .LinkTitle }}</strong>
+    {{ with .Description }}<span>{{ . }}</span>{{ end }}
+  </a></li>
+  {{ end }}
+</ul>

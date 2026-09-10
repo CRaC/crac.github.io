@@ -1,0 +1,47 @@
+{{ $p := hugo.Data.project }}
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <strong>CRaC</strong>
+        <p>Coordinated Restore at Checkpoint is an OpenJDK project, sponsored by the {{ $p.sponsor }}. This site documents the project and its API; it is not a vendor's product page.</p>
+      </div>
+
+      {{ range slice (dict "t" "Using CRaC" "m" site.Menus.footer_use)
+                     (dict "t" "Reference"  "m" site.Menus.footer_reference)
+                     (dict "t" "The project" "m" site.Menus.footer_project) }}
+      <div class="footer__col">
+        <h2>{{ .t }}</h2>
+        <ul>{{ range .m }}<li><a href="{{ .URL }}" {{ partial "link-attrs.html" .URL }}>{{ .Name }}</a></li>{{ end }}</ul>
+      </div>
+      {{ end }}
+
+      <div class="footer__col">
+        <h2>Upstream</h2>
+        <ul>
+          {{ range slice (dict "u" $p.openjdkPage "t" "OpenJDK project page")
+                         (dict "u" $p.wiki        "t" "OpenJDK wiki")
+                         (dict "u" $p.jdkRepo     "t" "openjdk/crac")
+                         (dict "u" $p.orgRepo     "t" "github.com/CRaC")
+                         (dict "u" $p.mailingList "t" (printf "%s mailing list" $p.mailingListName)) }}
+          <li><a href="{{ .u }}" {{ partial "link-attrs.html" .u }}>{{ .t }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      {{/* Utility links, not destinations: they belong beside the legal text
+           rather than in a topical column. */}}
+      <ul class="footer__utility">
+        <li><a href="{{ "sitemap/" | relURL }}">Sitemap</a></li>
+        <li><a href="{{ "llms.txt" | relURL }}">llms.txt</a></li>
+      </ul>
+      <p>
+        Java and OpenJDK are trademarks or registered trademarks of Oracle
+        and/or its affiliates. Other names may be trademarks of their
+        respective owners. This site is maintained by the CRaC community.
+      </p>
+    </div>
+  </div>
+</footer>

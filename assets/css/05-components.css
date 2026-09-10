@@ -1,0 +1,263 @@
+/* Cards ------------------------------------------------------------------ */
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.card h3 { letter-spacing: -0.018em; }
+.card p { color: var(--ink-muted); font-size: var(--t-sm); }
+.card > :last-child { margin-top: auto; }
+.card--link { text-decoration: none; color: var(--ink); }
+.card--link:hover {
+  border-color: var(--indigo-500); box-shadow: var(--shadow-md); transform: translateY(-2px); color: var(--ink);
+}
+.card__kicker {
+  font-family: var(--font-mono); font-size: var(--t-xs); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint); font-weight: 500;
+}
+
+/* Logo cards — the frameworks that ship CRaC support. The logos are the
+   projects' own marks, used to identify them. */
+.logo-card { align-items: flex-start; }
+.logo-card__mark { height: 2.2rem; width: auto; max-width: 100%; object-fit: contain; object-position: left center; }
+.logo-card ul { list-style: none; padding: 0; display: grid; gap: var(--s-2); font-size: var(--t-sm); color: var(--ink-muted); }
+.logo-card li { display: flex; gap: var(--s-3); align-items: baseline; }
+.logo-card li::before {
+  content: ""; flex: none; width: 0.4rem; height: 0.4rem; margin-top: 0.5em;
+  border-radius: 50%; background: var(--restore-500);
+}
+
+/* Tiles ------------------------------------------------------------------ */
+.tiles { list-style: none; padding: 0; display: grid; gap: var(--s-4);
+         grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.tile {
+  display: block; padding: var(--s-5); border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--surface);
+  text-decoration: none; color: var(--ink);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.tile:hover { border-color: var(--indigo-500); box-shadow: var(--shadow-md); transform: translateY(-2px); color: var(--ink); }
+.tile strong { display: block; font-size: var(--t-md); letter-spacing: -0.018em; }
+.tile span { display: block; font-size: var(--t-sm); color: var(--ink-muted); margin-top: var(--s-2); }
+.tile__out { font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-faint); margin-top: var(--s-3); display: block; }
+.band--dark .tile { background: var(--slate-800); border-color: var(--line-dark); color: var(--ink-invert); }
+.band--dark .tile:hover { border-color: var(--slate-500); color: #fff; }
+.band--dark .tile span, .band--dark .tile .tile__out { color: var(--ink-invert-muted); }
+
+/* Steps — a real sequence, so it is numbered ------------------------------ */
+.steps { counter-reset: step; display: grid; gap: var(--s-5); min-width: 0; }
+.step { display: grid; grid-template-columns: 2.4rem 1fr; gap: var(--s-4); align-items: start; min-width: 0; }
+.step > * { min-width: 0; }
+.step::before {
+  counter-increment: step; content: counter(step);
+  font-family: var(--font-mono); font-size: var(--t-base); font-weight: 500;
+  width: 2.4rem; height: 2.4rem; display: grid; place-items: center;
+  border-radius: 50%; background: var(--indigo-100); color: var(--indigo-700);
+  border: 1px solid var(--indigo-100);
+}
+.step h3 { font-size: var(--t-md); margin-bottom: var(--s-2); }
+.step p { color: var(--ink-muted); font-size: var(--t-sm); }
+.step pre { margin-top: var(--s-3); }
+.band--dark .step::before { background: rgba(255,255,255,0.08); color: #fff; border-color: var(--slate-700); }
+.band--dark .step p { color: var(--ink-invert-muted); }
+.band--dark .step pre { background: var(--slate-950); border: 1px solid var(--line-dark); }
+
+/* Notice — replaces the old theme's {{% notice %}} ----------------------- */
+.notice {
+  border: 1px solid var(--line); border-left: 3px solid var(--slate-500);
+  background: var(--surface); border-radius: var(--radius);
+  padding: var(--s-4) var(--s-5); font-size: var(--t-sm);
+}
+.notice > :first-child { margin-top: 0; }
+.notice__title { font-weight: 600; font-size: var(--t-base); margin-bottom: var(--s-2); color: var(--ink); }
+.notice--note    { border-left-color: var(--indigo-600); background: var(--indigo-100); }
+.notice--tip     { border-left-color: var(--restore-600); background: var(--restore-100); }
+.notice--warning { border-left-color: #b45309; background: #fef3c7; }
+.notice--warning .notice__title { color: #7c2d12; }
+
+/* Routes — the "ways in" cards ------------------------------------------- */
+.routes { list-style: none; padding: 0; display: grid; gap: var(--s-5);
+          grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+.route {
+  display: flex; flex-direction: column; gap: var(--s-3); height: 100%;
+  padding: var(--s-6); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: var(--surface); text-decoration: none; color: var(--ink);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.route:hover { border-color: var(--indigo-500); box-shadow: var(--shadow-lift); transform: translateY(-3px); color: var(--ink); }
+.route__for {
+  font-family: var(--font-mono); font-size: var(--t-xs); font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
+}
+.route__title { font-size: var(--t-xl); letter-spacing: -0.022em; }
+.route__cmd {
+  display: block; padding: var(--s-3) var(--s-4); border-radius: var(--radius-sm);
+  background: var(--slate-900); color: var(--ink-code); font-family: var(--font-mono);
+  font-size: var(--t-xs); line-height: 1.5; overflow-x: auto; border: 0;
+}
+.route__lede { font-size: var(--t-sm); color: var(--ink-muted); }
+.route__steps {
+  font-size: var(--t-xs); line-height: 1.6; color: var(--ink-faint);
+  padding-top: var(--s-3); border-top: 1px solid var(--line);
+}
+.route__go { margin-top: auto; padding-top: var(--s-2); font-weight: 600; color: var(--link);
+             display: inline-flex; align-items: center; gap: 0.4em; }
+.route__go::after { content: "→"; transition: transform 0.15s var(--ease); }
+.route:hover .route__go::after { transform: translateX(4px); }
+
+/* Runtime list ----------------------------------------------------------- */
+.runtimes { list-style: none; padding: 0; display: grid; gap: var(--s-3); }
+.runtime {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: var(--s-4) var(--s-5);
+}
+.runtime__text { flex: 1 1 17rem; }
+.runtime__name { font-weight: 600; letter-spacing: -0.012em; }
+.runtime__note { font-size: var(--t-sm); color: var(--ink-muted); }
+.runtime .btn { flex: none; }
+.badge {
+  display: inline-block; font-family: var(--font-mono); font-size: var(--t-xs);
+  font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+  background: var(--surface-cool-2); color: var(--ink-muted); border: 1px solid var(--line);
+}
+.badge--upstream { background: var(--indigo-100); color: var(--indigo-700); border-color: var(--indigo-100); }
+.badge--vendor { background: var(--surface-cool-2); }
+
+/* Prose ------------------------------------------------------------------ */
+.prose { max-width: 42rem; min-width: 0; }
+.prose > * + * { margin-top: var(--s-4); }
+.prose > * + h2 { margin-top: var(--s-7); }
+.prose > * + h3 { margin-top: var(--s-6); }
+.prose h2 { font-size: var(--t-xl); }
+.prose h3 { font-size: var(--t-md); }
+.prose ul, .prose ol { padding-left: 1.3rem; display: grid; gap: var(--s-2); }
+/* These lists are grids, so their items are grid items — and a grid item's
+   default minimum is its content's. A code block inside a list item therefore
+   stretches the item and the whole page scrolls sideways on a phone, which is
+   what /examples/jetty/ and /reference/best-practices/ did. */
+.prose li { min-width: 0; }
+.prose li pre, .prose li .highlight, .prose li .table-wrap { max-width: 100%; }
+.prose li > ul, .prose li > ol { margin-top: var(--s-2); }
+.prose blockquote { border-left: 3px solid var(--line-firm); padding-left: var(--s-5); color: var(--ink-muted); font-size: var(--t-md); }
+.prose img { border-radius: var(--radius); margin-block: var(--s-5); border: 1px solid var(--line); background: var(--surface); }
+.prose pre, .prose .highlight { max-width: 100%; }
+/* A long unbroken URL in prose is the other way a page grows sideways. */
+.prose a { overflow-wrap: anywhere; }
+.prose details {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: var(--s-4) var(--s-5);
+}
+.prose details + details { margin-top: var(--s-3); }
+.prose summary { cursor: pointer; font-weight: 600; font-size: var(--t-sm); }
+.prose details[open] summary { margin-bottom: var(--s-4); }
+
+/* A table scrolls inside its own box rather than widening the page. The
+   wrapper comes from layouts/_markup/render-table.html; min-width keeps the
+   columns from collapsing into an unreadable concertina inside it. */
+.table-wrap {
+  overflow-x: auto; margin-block: var(--s-5);
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+}
+.table-wrap table { min-width: 26rem; margin: 0; }
+.table-wrap th, .table-wrap td { padding: var(--s-3) var(--s-4); }
+.table-wrap tr:last-child td { border-bottom: 0; }
+.table-wrap code { overflow-wrap: anywhere; }
+
+/* External links in prose say so — they open in a new tab. */
+.prose a[target="_blank"]::after {
+  content: "↗"; font-size: 0.8em; margin-left: 0.15em; vertical-align: 0.15em;
+  text-decoration: none; color: var(--ink-faint);
+}
+
+/* Table of contents ------------------------------------------------------ */
+/* min-width: 0 on the children is not a detail: a grid item's default minimum
+   is its content's, so one wide code block stretches the column and the whole
+   page scrolls sideways on a phone. */
+.with-toc { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
+.with-toc > * { min-width: 0; }
+@media (min-width: 62rem) {
+  .with-toc { grid-template-columns: minmax(0, 46rem) 15rem; justify-content: space-between; }
+  .toc { position: sticky; top: 5.5rem; align-self: start; }
+}
+.toc { font-size: var(--t-sm); }
+.toc > strong {
+  display: block; font-family: var(--font-mono); font-size: var(--t-xs);
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint); margin-bottom: var(--s-3);
+}
+.toc ul { list-style: none; padding: 0; display: grid; gap: var(--s-2); border-left: 1px solid var(--line); }
+.toc li { padding-left: var(--s-4); }
+.toc ul ul { margin-top: var(--s-2); border-left: 0; }
+.toc a {
+  display: block; padding: 0.15rem 0; text-decoration: none; color: var(--ink-muted);
+  border-left: 2px solid transparent; margin-left: calc(var(--s-4) * -1); padding-left: var(--s-4);
+  transition: color 0.12s var(--ease), border-color 0.12s var(--ease);
+}
+.toc a:hover { color: var(--link); text-decoration: underline; }
+/* The current section: a rule on the left edge, so it reads as a position in
+   the document rather than a selected control. */
+.toc a[aria-current] { color: var(--link); font-weight: 600; border-left-color: var(--indigo-600); }
+
+/* Search results --------------------------------------------------------- */
+.search-page__form { display: flex; gap: var(--s-3); margin-top: var(--s-6); max-width: 34rem; }
+.search-page__form label { display: contents; }
+.search-page__form input {
+  flex: 1 1 auto; min-width: 0; padding: 0.7rem 1rem;
+  border: 1px solid var(--slate-700); border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.07); color: #fff; font: inherit;
+}
+.search-page__form input::placeholder { color: var(--ink-invert-faint); }
+.search-page__status { font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink-muted); }
+.search-page__section { margin-top: var(--s-7); }
+.search-page__section:first-of-type { margin-top: var(--s-5); }
+.search-page__section > h2 {
+  font-size: var(--t-xs); font-family: var(--font-mono); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint);
+  padding-bottom: var(--s-3); border-bottom: 1px solid var(--line); margin-bottom: var(--s-4);
+}
+.search-page__count { color: var(--link); }
+.search-result { padding: var(--s-4) 0; border-bottom: 1px solid var(--line); max-width: 50rem; }
+.search-result h3 { font-size: var(--t-md); }
+.search-result h3 a { text-decoration: none; color: var(--ink); }
+.search-result h3 a:hover { color: var(--link); text-decoration: underline; }
+.search-result p { font-size: var(--t-sm); color: var(--ink-muted); margin-top: var(--s-2); }
+.search-result mark { background: var(--restore-100); color: var(--restore-700); border-radius: 3px; padding: 0 0.15em; }
+.search-result__url { font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-faint); word-break: break-all; }
+
+/* Sitemap ---------------------------------------------------------------- */
+.sitemap { display: grid; gap: var(--s-7) var(--s-6); grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); align-items: start; }
+.sitemap__group h2 { font-size: var(--t-md); padding-bottom: var(--s-3); border-bottom: 2px solid var(--line-firm); margin-bottom: var(--s-4); }
+.sitemap__group h2 a { text-decoration: none; color: var(--ink); }
+.sitemap__group h2 a:hover { color: var(--link); }
+.sitemap__group ul { list-style: none; padding: 0; display: grid; gap: var(--s-4); }
+.sitemap__group li a { font-weight: 600; text-decoration: none; }
+.sitemap__group li a:hover { text-decoration: underline; }
+.sitemap__group span, .sitemap__note {
+  display: block; font-size: var(--t-xs); line-height: 1.55; color: var(--ink-muted); margin-top: var(--s-1);
+}
+
+/* --------------------------------------------------------------------------- */
+/* Edit this page                                                              */
+/* Quiet, and the last thing before the footer: an invitation, not a call to    */
+/* action. The path is shown because on a documentation site the useful part of */
+/* the offer is knowing WHICH file to change.                                  */
+/* --------------------------------------------------------------------------- */
+.edit-page {
+  border-top: 1px solid var(--line);
+  background: var(--surface-cool);
+  padding-block: var(--s-5);
+  font-size: var(--t-sm);
+  color: var(--ink-muted);
+}
+.edit-page p {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-2) var(--s-3);
+}
+.edit-page a { font-weight: 600; }
+.edit-page__path {
+  font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-faint);
+  margin-left: auto; word-break: break-all;
+}
+@media (max-width: 40rem) {
+  .edit-page__path { margin-left: 0; }
+}

@@ -1,0 +1,20 @@
+# Java runtimes with CRaC support.
+#
+# The upstream project comes first and is marked as such. Vendor builds follow,
+# alphabetically, with no ranking implied: this site documents the JDK project,
+# so it lists what exists rather than recommending one. A vendor's own
+# extensions to CRaC are that vendor's to document — the link goes to their
+# documentation rather than being restated here as though it were part of the
+# project.
+runtimes:
+  - name: "OpenJDK CRaC"
+    kind: upstream
+    note: "The project's own builds, from the openjdk/crac repository."
+    url: "https://crac.github.io/openjdk-builds/"
+    docs: "https://github.com/openjdk/crac"
+
+  - name: "Azul Zulu builds of OpenJDK"
+    kind: vendor
+    note: "Zulu builds with CRaC, and Azul's own additions documented separately."
+    url: "https://www.azul.com/downloads/?package=jdk-crac#zulu"
+    docs: "https://docs.azul.com/crac/"

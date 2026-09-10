@@ -1,0 +1,57 @@
+<header class="masthead">
+  <div class="wrap masthead__inner">
+    {{/* Typographic, because CRaC has no logo and inventing one for a project
+         this site does not own would be worse than setting its name well. The
+         capitalisation is the project's own: CRaC, not CRAC or Crac. */}}
+    <a class="masthead__logo" href="{{ site.Home.RelPermalink }}">CRaC<span>crac.org</span></a>
+
+    <div class="masthead__search">{{ partial "search-form.html" (dict "label" "Search") }}</div>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
+    <nav class="masthead__nav" id="site-nav" aria-label="Main">
+      <ul class="masthead__list">
+        {{ range site.Menus.main }}
+          {{/* "page" is the page you are on; "section" is an ancestor of it,
+               which keeps the top-level item lit while you read a sub-page. */}}
+          {{ $state := partial "nav-state.html" (dict "page" $ "entry" .) }}
+          {{ if .HasChildren }}
+            {{/* Every parent is a real page, so it keeps its link and gets a
+                 chevron button beside it — both jobs stay reachable by
+                 keyboard and by touch. */}}
+            <li class="nav-item nav-item--sub">
+              <a href="{{ .URL }}" {{ partial "link-attrs.html" .URL }}
+                 {{- if eq $state "page" }} aria-current="page"{{ end }}
+                 {{- if eq $state "section" }} data-in-section{{ end }}>{{ .Name }}</a>
+              <button class="nav-sub-toggle" type="button"
+                      aria-expanded="false" aria-controls="sub-{{ .Identifier }}">
+                <span class="visually-hidden">{{ .Name }} pages</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+                     stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+              <ul class="nav-sub" id="sub-{{ .Identifier }}">
+                {{ range .Children }}
+                  {{ $child := partial "nav-state.html" (dict "page" $ "entry" . "exact" true) }}
+                  <li><a href="{{ .URL }}" {{ partial "link-attrs.html" .URL }}
+                         {{- if eq $child "page" }} aria-current="page"{{ end }}
+                         {{- if eq $child "section" }} data-in-section{{ end }}>{{ .Name }}</a></li>
+                {{ end }}
+              </ul>
+            </li>
+          {{ else }}
+            <li class="nav-item">
+              <a href="{{ .URL }}" {{ partial "link-attrs.html" .URL }}
+                 {{- if eq $state "page" }} aria-current="page"{{ end }}
+                 {{- if eq $state "section" }} data-in-section{{ end }}>{{ .Name }}</a>
+            </li>
+          {{ end }}
+        {{ end }}
+        <li class="nav-item nav-item--drawer-search">
+          {{ partial "search-form.html" (dict "label" "Search (menu)") }}
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

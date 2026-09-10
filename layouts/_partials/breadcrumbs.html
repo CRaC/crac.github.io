@@ -1,0 +1,35 @@
+{{- /* Breadcrumbs, on every page but the home page — a trail of one step says
+       nothing, and the home page is the root of the trail.
+
+       Built from .Ancestors, so it follows the real content tree rather than a
+       hand-kept list, and it skips an ancestor with no RelPermalink: an
+       unrendered filing directory has no address to link to.
+
+       Addresses come from the pages themselves — RelPermalink for the links,
+       Permalink for the JSON-LD — never from relURL or absURL on a
+       hand-written path, because a leading slash makes relURL skip the base
+       path and silently breaks every such link on a project site. */ -}}
+{{- if not .IsHome -}}
+{{- $trail := slice (dict "title" "Home" "rel" site.Home.RelPermalink "abs" site.Home.Permalink) -}}
+{{- range .Ancestors.Reverse -}}
+  {{- if and (not .IsHome) .RelPermalink -}}
+    {{- $trail = $trail | append (dict "title" .LinkTitle "rel" .RelPermalink "abs" .Permalink) -}}
+  {{- end -}}
+{{- end -}}
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    {{- range $trail }}
+    <li><a href="{{ .rel }}">{{ .title }}</a></li>
+    {{- end }}
+    <li><span aria-current="page">{{ .LinkTitle }}</span></li>
+  </ol>
+</nav>
+{{- $items := slice -}}
+{{- range $i, $c := $trail -}}
+  {{- $items = $items | append (dict "@type" "ListItem" "position" (add $i 1) "name" $c.title "item" $c.abs) -}}
+{{- end -}}
+{{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $trail) 1) "name" .LinkTitle "item" .Permalink) -}}
+<script type="application/ld+json">
+{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify }}
+</script>
+{{- end -}}

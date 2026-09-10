@@ -1,0 +1,7 @@
+{{- /* A template, not a static file: the sitemap URL has to follow the real
+       baseURL, or a build deployed to crac.github.io tells crawlers to index
+       crac.org instead. */ -}}
+User-agent: *
+Allow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}

@@ -1,0 +1,202 @@
+{{ define "main" }}
+{{ $p := hugo.Data.project }}
+{{ $d := hugo.Data.startup }}
+
+<section class="hero">
+  <div class="wrap hero__inner">
+    <p class="eyebrow">OpenJDK project · sponsored by the {{ $p.sponsor }}</p>
+    <h1>Start a JVM from where it left off.</h1>
+    <p class="hero__lede">
+      Coordinated Restore at Checkpoint takes an image of a running, warmed-up
+      Java instance and restores from it. The application skips its own
+      start-up: class loading and JIT compilation have already happened.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="{{ "use/crac-runtime/" | relURL }}">Get a runtime with CRaC</a>
+      <a class="btn btn--on-dark" href="{{ "use/implement-crac/" | relURL }}">Add CRaC to your code</a>
+    </div>
+    <p class="hero__meta">
+      <span>API <strong>{{ $p.api.artifact }} {{ $p.api.version }}</strong></span>
+      <span>Upstream <strong>openjdk/crac</strong></span>
+      <span>Mailing list <strong>{{ $p.mailingListName }}</strong></span>
+    </p>
+  </div>
+</section>
+
+<div class="wrap">{{ partial "collapse-bars.html" . }}</div>
+
+{{/* --- What it is ------------------------------------------------------- */}}
+<section class="band band--tight">
+  <div class="wrap">
+    <div class="grid grid--2" style="gap:var(--s-7);align-items:start">
+      <div>
+        <p class="eyebrow">What CRaC is</p>
+        <h2>A standard way to tell a Java program it is being checkpointed</h2>
+        <p class="lede" style="margin-top:var(--s-4)">
+          Checkpoint/restore mechanisms can snapshot a process, but a Java
+          application usually holds things a snapshot cannot carry — open
+          sockets, files, pooled connections, timers. CRaC's contribution is a
+          mechanism-agnostic API through which the runtime tells the
+          application a checkpoint is coming, so it can release those things
+          and reacquire them on restore.
+        </p>
+        <div class="btn-row" style="margin-top:var(--s-5)">
+          <a class="btn btn--ghost btn--sm" href="{{ "about/about-crac/" | relURL }}">How it works</a>
+          <a class="link-arrow" href="{{ $p.openjdkPage }}" {{ partial "link-attrs.html" $p.openjdkPage }}>The project at openjdk.org</a>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card__kicker">The API</p>
+        <p><code>{{ $p.api.artifact }}</code> mirrors <code>jdk.crac</code> and degrades to a no-op on a runtime without CRaC support, so an application can depend on it unconditionally.</p>
+        <pre><code class="language-java">public class Cache implements Resource {
+  public void beforeCheckpoint(Context&lt;? extends Resource&gt; c) {
+    // release what cannot survive the image
+  }
+  public void afterRestore(Context&lt;? extends Resource&gt; c) {
+    // reacquire it
+  }
+}</code></pre>
+        <p><a class="link-arrow" href="{{ "use/implement-crac/" | relURL }}">Implementing the API</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* --- Runtimes -------------------------------------------------------- */}}
+<section class="band band--cool">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">First you need a runtime</p>
+      <h2>Java runtimes with CRaC support</h2>
+      <p>CRaC has to be built into the runtime. The upstream project's own builds come first; vendor builds follow, and each vendor documents its own additions.</p>
+    </div>
+    <ul class="runtimes">
+      {{ range hugo.Data.runtimes.runtimes }}
+      <li class="runtime">
+        <div class="runtime__text">
+          <div class="runtime__name">{{ .name }}</div>
+          <div class="runtime__note">{{ .note }}</div>
+        </div>
+        <span class="badge badge--{{ .kind }}">{{ cond (eq .kind "upstream") "upstream" "vendor build" }}</span>
+        <a class="btn btn--ghost btn--sm" href="{{ .url }}" {{ partial "link-attrs.html" .url }}>
+          {{ partial "icon.html" "download" }} Builds
+        </a>
+        <a class="btn btn--ghost btn--sm" href="{{ .docs }}" {{ partial "link-attrs.html" .docs }}>Docs</a>
+      </li>
+      {{ end }}
+    </ul>
+    <div class="btn-row" style="margin-top:var(--s-5)">
+      <a class="link-arrow" href="{{ "use/crac-runtime/" | relURL }}">More about runtimes, and the criu permissions they need</a>
+    </div>
+  </div>
+</section>
+
+{{/* --- How a deployment works ------------------------------------------ */}}
+<section class="band band--dark">
+  <div class="wrap">
+    <div class="grid grid--2" style="gap:var(--s-8);align-items:start">
+      <div>
+        <p class="eyebrow">How a deployment works</p>
+        <h2>Warm it up once, then start from the image</h2>
+        <p class="section-head" style="margin-bottom:0;color:var(--ink-invert-muted);font-size:var(--t-md)">
+          The image has to come from somewhere, and that shapes the deployment:
+          the application is run and exercised first, and the image it produces
+          becomes part of the bundle that ships.
+        </p>
+        <div class="btn-row" style="margin-top:var(--s-6)">
+          <a class="btn btn--on-dark" href="{{ "use/" | relURL }}">The deployment scheme</a>
+          <a class="link-arrow" href="{{ "use/checkpoint-and-restore/" | relURL }}">Taking a checkpoint</a>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Run and exercise it</h3>
+            <p>Deploy to a canary environment and send it real requests, so classes load and the JIT compiles.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Checkpoint the running JVM</h3>
+            <pre><code>jcmd &lt;pid&gt; JDK.checkpoint</code></pre>
+            <p>The image of the JVM and the application becomes part of the deployment bundle.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Restore in production</h3>
+            <pre><code>java -XX:CRaCRestoreFrom=./image</code></pre>
+            <p>The restored process already has its loaded classes and compiled code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* --- Frameworks ------------------------------------------------------ */}}
+<section class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Used by</p>
+      <h2>Frameworks that already coordinate with CRaC</h2>
+      <p>Each of these releases CRaC support, so an application usually inherits the coordination rather than writing it.</p>
+    </div>
+    <div class="grid grid--2">
+      {{ range hugo.Data.frameworks.frameworks }}
+      <article class="card logo-card">
+        {{ with resources.Get .logo }}
+          {{ if eq .MediaType.SubType "svg" }}
+            <img class="logo-card__mark" src="{{ .RelPermalink }}" alt="" loading="lazy">
+          {{ else }}
+            {{ with .Resize "440x webp q90" }}
+              <img class="logo-card__mark" src="{{ .RelPermalink }}"
+                   width="{{ .Width }}" height="{{ .Height }}" alt="" loading="lazy">
+            {{ end }}
+          {{ end }}
+        {{ end }}
+        <h3>{{ .name }}{{ with .since }} <span class="badge">since {{ . }}</span>{{ end }}</h3>
+        <ul>{{ range .points }}<li>{{ . | safeHTML }}</li>{{ end }}</ul>
+        <div class="btn-row">
+          <a class="link-arrow" href="{{ partial "site-url.html" .page }}">{{ .name }} and CRaC</a>
+          {{ with .example }}<a class="btn btn--ghost btn--sm" href="{{ . }}" {{ partial "link-attrs.html" . }}>{{ partial "icon.html" "github" }} Example</a>{{ end }}
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{/* --- Take part ------------------------------------------------------- */}}
+<section class="band band--cool band--tight">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Take part</p>
+      <h2>CRaC is a research project, in the open</h2>
+      <p>The work happens on the OpenJDK mailing list and in the repositories. Nothing here is a product roadmap.</p>
+    </div>
+    <ul class="tiles">
+      <li><a class="tile" href="{{ $p.mailingList }}" target="_blank" rel="noopener">
+        <strong>{{ $p.mailingListName }}</strong>
+        <span>Where the project's design discussion happens.</span>
+        <span class="tile__out">mail.openjdk.org</span>
+      </a></li>
+      <li><a class="tile" href="{{ $p.jdkRepo }}" target="_blank" rel="noopener">
+        <strong>openjdk/crac</strong>
+        <span>The JDK repository the project develops in.</span>
+        <span class="tile__out">github.com</span>
+      </a></li>
+      <li><a class="tile" href="{{ $p.apiRepo }}" target="_blank" rel="noopener">
+        <strong>CRaC/org.crac</strong>
+        <span>The compatibility API most applications depend on.</span>
+        <span class="tile__out">github.com</span>
+      </a></li>
+      <li><a class="tile" href="{{ $p.wiki }}" target="_blank" rel="noopener">
+        <strong>OpenJDK wiki</strong>
+        <span>Notes and current state, maintained by the project.</span>
+        <span class="tile__out">wiki.openjdk.org</span>
+      </a></li>
+    </ul>
+  </div>
+</section>
+{{ end }}

@@ -1,9 +1,16 @@
-+++
-title = "Java Runtime with CRaC Support"
-weight = 18
-+++
-
+---
+title: "Runtimes with CRaC support"
+linkTitle: "Runtimes with CRaC"
+weight: 18
+eyebrow: "Prerequisite"
+description: "CRaC has to be built into the Java runtime. The upstream builds, the vendor builds, and the criu permissions they need."
+---
 To use the CRAC functionality, you need a Java runtime that has support for CRaC integrated.
+
+Runtimes differ in more than whether they have CRaC at all: the mechanism that
+takes the image is selectable, and which mechanisms a build offers is part of
+what you are choosing between. See
+[checkpoint engines](/reference/engines/).
 
 ## OpenJDK CRaC
 
@@ -31,6 +38,9 @@ sudo chmod u+s $JAVA_HOME/lib/criu
 Azul integrated full CRaC functionality for Linux/x64 and Linux/Arm64, in version 17, 21, and 22 of Azul Zulu Builds of OpenJDK. This means, for now, you can run an application with CRaC on any system thanks to the crac.org dependency, but only on the specified OS systems the CRaC functionality in the JVM will work.
 
 As of January 2024, downloads are also available for Windows and macOS of Zulu with CRaC support, but only for development purposes. With these runtimes you are able to simulate the CRaC functionality. When you request a checkpoint, it is created and immediately restored without dumping the checkpoint to disk. This enables you to develop and test the CRaC functionality on these platforms, so you can deploy your application with confidence on Linux.
+
+Azul's builds also carry additions that are not part of the OpenJDK project, e.g. the `warp` engine, and those are documented at
+[docs.azul.com/crac](https://docs.azul.com/crac/) rather than on this site.
 
 ## AWS Lambda SnapStart
 

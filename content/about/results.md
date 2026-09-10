@@ -1,10 +1,11 @@
-+++
-title = "Startup Improvement Results"
-weight = 12
-+++
-
+---
+title: "Measured results"
+weight: 12
+eyebrow: "Benchmarks"
+description: "Time to first operation, cold start against restore, as measured by the project — with the conditions they were measured under."
+---
 CRaC support was implemented in a few frameworks with the following results.
-The source code can be found in the [Projects with CRaC support](#projects-with-crac-support) section.
+The source code can be found in the [frameworks with CRaC support](/frameworks/).
 
 <details><summary>The environment</summary>
 <p>
@@ -31,7 +32,7 @@ To reproduce you need to create a workspace directory and clone along next repos
 * [example-micronaut](https://github.com/org-crac/example-micronaut)
 * [example-xml-transform](https://github.com/org-crac/example-xml-transform)
 
-You need to build examples according to the [Projects with CRaC support](#projects-with-crac-support) section.
+You need to build examples according to the [frameworks with CRaC support](/frameworks/).
 
 Then run
 ```
@@ -49,7 +50,13 @@ Last command regenerates graphs in the `docs`.
 ---
 </details>
 
+## Time to first operation
+
 ![Startup Time](/images/results/startup.png)
+
+## Throughput while warming up
+
+Requests completed against time, cold start against restore.
 
 ![Spring Boot](/images/results/spring-boot.png)
 

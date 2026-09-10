@@ -1,0 +1,78 @@
+{{ define "main" }}
+{{ partial "page-head.html" . }}
+
+{{/* Built from the menus, so this page cannot list a section the navigation
+     does not have, or miss one it does. Pages that sit outside the menus are
+     collected afterwards from the site's own page list rather than named here,
+     which is what keeps a new page from going unlisted. */}}
+<section class="band">
+  <div class="wrap">
+    {{ $listed := slice }}
+    <div class="sitemap">
+      {{ range site.Menus.main }}
+        {{ $listed = $listed | append .URL }}
+        <section class="sitemap__group">
+          <h2><a href="{{ .URL }}">{{ .Name }}</a></h2>
+          {{ with .Children }}
+          <ul>
+            {{ range . }}
+              {{ $listed = $listed | append .URL }}
+              <li>
+                <a href="{{ .URL }}">{{ .Name }}</a>
+                {{ with .Page }}{{ with .Description }}<span>{{ . }}</span>{{ end }}{{ end }}
+              </li>
+            {{ end }}
+          </ul>
+          {{ else }}
+            {{ with .Page }}{{ with .Description }}<p class="sitemap__note">{{ . }}</p>{{ end }}{{ end }}
+          {{ end }}
+        </section>
+      {{ end }}
+
+      {{/* Reachable pages no menu entry points at, so a new page cannot go
+           unlisted. Excludes this page and the 404. */}}
+      {{ $extra := slice }}
+      {{ range site.RegularPages }}
+        {{ if and (not (in $listed .RelPermalink))
+                  (ne .RelPermalink $.RelPermalink)
+                  (not (in (slice "/404.html") .RelPermalink)) }}
+          {{ $extra = $extra | append . }}
+        {{ end }}
+      {{ end }}
+      {{ with $extra }}
+      <section class="sitemap__group">
+        <h2>Elsewhere</h2>
+        <ul>
+          {{ range .ByTitle }}
+          <li>
+            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            {{ with .Description }}<span>{{ . }}</span>{{ end }}
+          </li>
+          {{ end }}
+        </ul>
+      </section>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="band band--cool band--tight">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">For machines</p>
+      <h2>Machine-readable indexes</h2>
+      <p>Both generated from the same content as the pages above.</p>
+    </div>
+    <ul class="tiles">
+      <li><a class="tile" href="{{ "sitemap.xml" | relURL }}">
+        <strong>sitemap.xml</strong>
+        <span>The crawler index: every page with its last-modified date.</span>
+      </a></li>
+      <li><a class="tile" href="{{ "llms.txt" | relURL }}">
+        <strong>llms.txt</strong>
+        <span>A plain-text index for language models, following llmstxt.org — the pages, the API, the runtimes and the measured results.</span>
+      </a></li>
+    </ul>
+  </div>
+</section>
+{{ end }}

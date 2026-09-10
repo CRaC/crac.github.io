@@ -1,0 +1,23 @@
+{{- /* Markdown images.
+
+       The same base-path problem as links, and easy to miss because the link
+       hook does not cover images: a root-absolute `/images/flow/flow.png` in
+       prose 404s when the site is served from a subdirectory, and the page
+       still renders — just without the diagram.
+
+       Also adds lazy loading and the intrinsic dimensions where the file is
+       one of the site's own assets, so a diagram does not shift the page as it
+       arrives. */ -}}
+{{- $src := partial "site-url.html" .Destination -}}
+{{- $w := "" -}}{{- $h := "" -}}
+{{- if not (urls.Parse .Destination).Host -}}
+  {{- with resources.Get (strings.TrimPrefix "/" .Destination) -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") -}}
+      {{- $w = .Width -}}{{- $h = .Height -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $src | safeURL }}" alt="{{ .Text }}"
+     {{- with .Title }} title="{{ . }}"{{ end }}
+     {{- with $w }} width="{{ . }}"{{ end }}
+     {{- with $h }} height="{{ . }}"{{ end }} loading="lazy">

@@ -1,8 +1,9 @@
-+++
-title = "What is Coordinated Restore at Checkpoint?"
-weight = 11
-+++
-
+---
+title: "What CRaC is"
+weight: 11
+eyebrow: "Concepts"
+description: "How checkpoint and restore work, what the API is for, and what a Java application has to coordinate."
+---
 Coordinated Restore at Checkpoint (CRaC) is an OpenJDK feature that provides a fast start and immediate performance for Java applications.
 
 A Java application and JVM are started from an image in a warmed-up form.
@@ -35,13 +36,13 @@ When running checkpoint and restore on different computers you may seen an error
 You have to specify -XX:CPUFeatures=[...] together with -XX:CRaCCheckpointTo when making a checkpoint file; specified -XX:CRaCRestoreFrom file contains CPU features [...]; missing features of this CPU are [...]
 ```
 
-See [more details about the CPU Features configuration](cpu-features.md).
+See [more details about the CPU Features configuration](/reference/cpu-features/).
 
 ## Programmer's flow
 
 Programs may need to be adjusted for use with Coordinated Restore at Checkpoint.
 
-A [step-by-step guide](STEP-BY-STEP.md) and [best practices guide](best-practices.md) provide information on how to implement the CRaC support in the code.
+A [step-by-step guide](https://github.com/CRaC/docs/blob/master/STEP-BY-STEP.md) and [best practices guide](/reference/best-practices/) provide information on how to implement the CRaC support in the code.
 
 Another option is to use an existing framework with CRaC support.
 
@@ -51,7 +52,7 @@ No changes required:
 * Spring Boot: https://github.com/CRaC/example-spring-boot
 
 With configuration changes:
-* [Quarkus Super Heroes migration](super-heroes.md) shows a walkthrough for making an existing non-trivial Quarkus application CRaC-able.
+* [Quarkus Super Heroes migration](/examples/super-heroes/) shows a walkthrough for making an existing non-trivial Quarkus application CRaC-able.
 
 ### API
 
@@ -88,9 +89,9 @@ Current OpenJDK implementation is based on using the CRIU project to create the 
 
 [CRIU](https://github.com/CRaC/criu) hosts a few changes made to improve CRaC usability.
 
-You can read more about debugging C/R issues in your application in the [debug guide](./debugging.md).
+You can read more about debugging C/R issues in your application in the [debug guide](/reference/debugging/).
 
 ## Workarounds
 
-Sometimes it might be difficult to alter the application to properly coordinate with the checkpoint (e.g. due to a code in a library you cannot modify). As a temporary workaround you can [configure file-descriptor policies](./fd-policies.md).
+Sometimes it might be difficult to alter the application to properly coordinate with the checkpoint (e.g. due to a code in a library you cannot modify). As a temporary workaround you can [configure file-descriptor policies](/reference/fd-policies/).
 

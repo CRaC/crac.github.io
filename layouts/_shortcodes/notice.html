@@ -1,0 +1,17 @@
+{{- /* An aside. Replaces the old theme's {{% notice %}}, with the same named
+       arguments, so migrated content did not have to be rewritten:
+
+         style   note | tip | warning | (anything else falls back to plain)
+         title   optional heading
+
+       Call it with the PERCENT delimiters. With the angle-bracket form Hugo
+       hands Goldmark a placeholder and this block-level div lands wherever that
+       placeholder ended up — which can be inside a paragraph Goldmark has
+       extended over the following heading, taking the next section with it. */ -}}
+{{- $style := .Get "style" | default "" -}}
+{{- $known := slice "note" "tip" "warning" -}}
+{{- $class := cond (in $known $style) (printf "notice notice--%s" $style) "notice" -}}
+<div class="{{ $class }}">
+{{ with .Get "title" }}<p class="notice__title">{{ . }}</p>{{ end }}
+{{ .Inner }}
+</div>

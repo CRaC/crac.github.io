@@ -1,8 +1,9 @@
-+++
-title = "AWS Lambda"
-weight = 30
-+++
-
+---
+title: "AWS Lambda"
+weight: 30
+eyebrow: "Platform"
+description: "Running CRaC-aware Java functions on AWS Lambda."
+---
 [AWS Libs with CRaC](https://github.com/CRaC/aws-lambda-java-libs) allows implementation of AWS Lambda functions on CRaC JDK.
 
 Artifacts: https://mvnrepository.com/artifact/io.github.crac.com.amazonaws

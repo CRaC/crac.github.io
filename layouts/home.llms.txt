@@ -1,0 +1,105 @@
+{{- /* /llms.txt, per llmstxt.org: a plain-text index of the site for a model
+       that has been pointed at it, so it can find the right page rather than
+       guessing from a crawl.
+
+       Everything here is generated. The page list is the site's own menu plus
+       whatever the menu does not reach, the numbers come from
+       data/startup.yaml and the runtimes from data/runtimes.yaml — so this
+       file cannot promise a figure or a runtime the site does not show. */ -}}
+{{- $p := hugo.Data.project -}}
+{{- $d := hugo.Data.startup -}}
+# CRaC — Coordinated Restore at Checkpoint
+
+> {{ site.Params.description }}
+
+CRaC is an OpenJDK project sponsored by the {{ $p.sponsor }}. It researches
+coordinating Java programs with checkpoint/restore mechanisms: taking an image
+of a running, warmed-up JVM and restoring from it, so an application skips its
+own start-up. Its main deliverable is a mechanism-agnostic API through which
+the runtime tells an application that a checkpoint is about to happen, so the
+application can release what an image cannot carry and reacquire it on restore.
+
+This site documents the JDK project and its API. It is not a vendor's product
+page: vendor builds are listed, and each vendor's own extensions to CRaC are
+linked to that vendor's documentation rather than restated here.
+
+## The API
+
+- Artifact: `{{ $p.api.artifact }}` {{ $p.api.version }} — [release]({{ $p.api.release }}), [javadoc]({{ $p.api.javadoc }})
+- {{ $p.api.note }}
+
+## Measured results
+
+Time to first operation, cold start against restore from a CRaC image, as
+measured by the project.
+
+{{ range sort $d.frameworks "cold" "desc" -}}
+- {{ .name }}: {{ .cold }} ms cold, {{ .restore }} ms restored ({{ lang.FormatNumber 0 (div (float .cold) (float .restore)) }}× faster) — [example]({{ .example }})
+{{ end }}
+Conditions, which matter as much as the numbers: {{ $d.measured.jdk }} on
+{{ $d.measured.hardware }}, {{ $d.measured.kernel }}, in a {{ $d.measured.container }}.
+{{ $d.measured.note }} Reproduce with {{ $d.measured.reproduce }}.
+
+## Runtimes with CRaC support
+
+CRaC has to be built into the Java runtime.
+
+{{ range hugo.Data.runtimes.runtimes -}}
+- {{ .name }} ({{ cond (eq .kind "upstream") "upstream project" "vendor build" }}): {{ .note }} — [builds]({{ .url }}), [documentation]({{ .docs }})
+{{ end }}
+## Frameworks with CRaC support
+
+{{ range hugo.Data.frameworks.frameworks -}}
+- {{ .name }}{{ with .since }} (since {{ . }}){{ end }}: {{ delimit .points "; " | plainify }}{{ with .example }} — [example]({{ . }}){{ end }}
+{{ end }}
+## Pages on this site
+
+{{/* From the menu, then anything the menu does not reach, deduplicated — so a
+     page can neither be listed twice nor go missing. */}}
+{{- $seen := slice -}}
+{{- $lines := slice -}}
+{{- range site.Menus.main -}}
+  {{- $entries := cond .HasChildren .Children (slice .) -}}
+  {{- range $entries -}}
+    {{- with .Page -}}
+      {{- if not (in $seen .RelPermalink) -}}
+        {{- $seen = $seen | append .RelPermalink -}}
+        {{- $lines = $lines | append (printf "- [%s](%s)%s" .Title .Permalink (cond (ne .Description "") (printf ": %s" .Description) "")) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range site.RegularPages -}}
+  {{- if and (not (in $seen .RelPermalink))
+             (not (in (slice "/search/" "/404.html") .RelPermalink)) -}}
+    {{- $seen = $seen | append .RelPermalink -}}
+    {{- $lines = $lines | append (printf "- [%s](%s)%s" .Title .Permalink (cond (ne .Description "") (printf ": %s" .Description) "")) -}}
+  {{- end -}}
+{{- end -}}
+{{ delimit $lines "\n" }}
+
+## Upstream
+
+- OpenJDK project page: {{ $p.openjdkPage }}
+- OpenJDK wiki: {{ $p.wiki }}
+- JDK repository: {{ $p.jdkRepo }}
+- Project organisation: {{ $p.orgRepo }}
+- Compatibility API: {{ $p.apiRepo }}
+- Mailing list: {{ $p.mailingList }} ({{ $p.mailingListName }})
+
+## Notes for a model answering questions about CRaC
+
+- CRaC is an OpenJDK project, not a product. There is no release train or
+  support lifecycle to quote.
+- **CRaC has to be in the runtime.** A stock OpenJDK build does not have it.
+  `{{ $p.api.artifact }}` compiles and runs against a runtime without CRaC, but
+  it does nothing there.
+- **docs.azul.com/crac documents Azul's builds, not this project.** Several
+  features there — Zing usage, image compression and encryption, S3 storage,
+  automatic checkpoint, alternative images — are Azul additions. Do not
+  describe them as OpenJDK CRaC features.
+- Checkpoint on Linux uses CRIU, which needs elevated permissions; the runtime
+  page covers what has to be set.
+- The measured figures above are old: a jdk14-crac build on 2015 hardware.
+  Quote the ratio and the conditions, not the absolute milliseconds as
+  today's performance.

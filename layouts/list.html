@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{ partial "page-head.html" . }}
+{{ with .Content }}
+<section class="band">
+  <div class="wrap">
+    {{ if partial "wants-toc.html" $ }}
+    <div class="with-toc">
+      <div class="prose" style="max-width:none">{{ . }}</div>
+      <nav class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        {{ $.TableOfContents }}
+      </nav>
+    </div>
+    {{ else }}
+    <div class="prose">{{ . }}</div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+{{ with .Pages }}
+<section class="band{{ if $.Content }} band--cool{{ end }}">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">In this section</p>
+      <h2>{{ len . }} page{{ if ne (len .) 1 }}s{{ end }}</h2>
+    </div>
+    <ul class="tiles">
+      {{ range .ByWeight }}
+      <li><a class="tile" href="{{ .RelPermalink }}">
+        <strong>{{ .LinkTitle }}</strong>
+        <span>{{ with .Description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</span>
+      </a></li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}
+{{ end }}

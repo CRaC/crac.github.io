@@ -1,3 +1,24 @@
-.idea/
-/.hugo_build.lock
+# Hugo build output and caches
 /public/
+/resources/_gen/
+/.hugo_build.lock
+hugo_stats.json
+
+# test.sh builds here instead of public/, so the gate and a running
+# `hugo server` cannot overwrite each other.
+/.gate/
+
+# macOS
+.DS_Store
+
+# IDE
+/.idea/
+
+# Playwright and the e2e harness.
+# package-lock.json is deliberately NOT ignored: `npm ci` refuses to run
+# without it, and actions/setup-node's npm cache needs it to key on.
+/node_modules/
+/test-results/
+/playwright-report/
+/tests/e2e/.pages.json
+/tests/e2e/.pages.json.tmp

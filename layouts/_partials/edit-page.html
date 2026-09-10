@@ -1,0 +1,30 @@
+{{- /* "Edit this page on GitHub", at the foot of every page that has a source
+       file to edit.
+
+       Rendered from baseof.html rather than from each layout, so no template
+       can forget it and the placement cannot drift between sections.
+
+       Three pages are skipped, because the link would be a trap: /search/ and
+       /sitemap/ are laid out entirely by their templates and their markdown
+       holds nothing but front matter, and the 404 is not a page anyone
+       arrives at meaning to improve. The home page is skipped for the same
+       reason — content/_index.md is front matter and a comment, since
+       layouts/home.html builds the page from data/.
+
+       .File is nil for a generated page, which is why it is checked before
+       being used. */ -}}
+{{- $skip := slice "/search/" "/sitemap/" "/404.html" -}}
+{{- if and .File (not .IsHome) (not (in $skip .RelPermalink)) -}}
+  {{- $repo := site.Params.repo -}}
+  {{- $branch := site.Params.repoBranch | default "main" -}}
+  {{- $path := path.Join "content" .File.Path -}}
+<aside class="edit-page">
+  <div class="wrap">
+    <p>
+      Something wrong or missing on this page?
+      <a href="{{ printf "%s/edit/%s/%s" $repo $branch $path }}" target="_blank" rel="noopener">Edit it on GitHub</a>.
+      <span class="edit-page__path">{{ $path }}</span>
+    </p>
+  </div>
+</aside>
+{{- end -}}

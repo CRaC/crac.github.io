@@ -1,0 +1,18 @@
+{{ define "main" }}
+{{ partial "page-head.html" . }}
+<section class="band">
+  <div class="wrap">
+    {{ if partial "wants-toc.html" . }}
+    <div class="with-toc">
+      <div class="prose" style="max-width:none">{{ .Content }}</div>
+      <nav class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        {{ .TableOfContents }}
+      </nav>
+    </div>
+    {{ else }}
+    <div class="prose">{{ .Content }}</div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

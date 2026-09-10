@@ -1,11 +1,15 @@
-+++
-title = "Best Practices"
-weight = 10
-+++
-
+---
+title: "Best practices"
+weight: 10
+eyebrow: "Reference"
+description: "What to do and what to avoid when writing an application that will be checkpointed."
+# This section was /extra-info/ and is deployed there, so the old path
+# keeps working rather than 404ing for anyone who linked it.
+aliases: ["/extra-info/best-practices/"]
+---
 ## Best practices for implementing CRaC support in your application/library
 
-This guide assumes you are already familiar with the concepts and `Resource` API; please check out the [step-by-step guide](STEP-BY-STEP.md) for those.
+This guide assumes you are already familiar with the concepts and `Resource` API; please check out the [step-by-step guide](https://github.com/CRaC/docs/blob/master/STEP-BY-STEP.md) for those.
 
 ### Implementing Resource as inner class
 

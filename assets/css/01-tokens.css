@@ -1,0 +1,108 @@
+/* ---------------------------------------------------------------------------
+   Design tokens — CRaC
+   CRaC has no brand assets: no logo, no palette, and the blue on the old site
+   was a theme default. So this is an identity built for the subject rather
+   than handed down.
+   The subject is time collapsing — a JVM that took four seconds to reach its
+   first transaction reaching it in forty milliseconds. Two consequences run
+   through everything below:
+     - COLOUR CARRIES MEANING. --restore is used only for the state after a
+       restore, and --cold only for a cold start. Neither is decoration, so
+       neither appears anywhere it would not mean that.
+     - NUMBERS ARE THE PERSONALITY. Milliseconds are set in JetBrains Mono at
+       display sizes, because the argument this project makes is a number
+       getting smaller.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Slate — the structural ground */
+  --slate-950: #0d1017;
+  --slate-900: #161a22;
+  --slate-800: #212734;
+  --slate-700: #2f3745;
+  --slate-500: #5c6675;
+  --slate-300: #a7b0bd;
+  --slate-200: #c9d0d9;
+  --slate-100: #e4e8ed;
+  --slate-050: #f1f3f6;
+
+  /* The two states CRaC compares. Green is "restored", and it is the only
+     green on the site; the cold start is deliberately colourless. */
+  --restore-700: #07694b;
+  --restore-600: #0a8a61;
+  --restore-500: #0faa77;
+  --restore-300: #5fd3ab;
+  --restore-100: #d3f3e7;
+  --cold: var(--slate-300);
+  --cold-dark: var(--slate-700);
+
+  /* Accent for links and actions: an indigo that is not the restore green, so
+     "this is clickable" never reads as "this is the fast one". */
+  --indigo-700: #2f3ea8;
+  --indigo-600: #3d4fd1;
+  --indigo-500: #5566e6;
+  --indigo-100: #e2e6fb;
+
+  /* Surfaces */
+  --surface:       #ffffff;
+  --surface-cool:  #f6f7f9;
+  --surface-cool-2:#eceff4;
+  --surface-dark:  var(--slate-900);
+
+  /* Ink. Contrast pairs are stated once here and used everywhere. */
+  --ink:              #131721;
+  --ink-muted:        #4a5261;
+  --ink-faint:        #646d7d;   /* AA at small sizes on every surface here */
+  --ink-invert:       #ffffff;
+  --ink-invert-muted: #b9c1cd;
+  --ink-invert-faint: #8d97a6;
+  --ink-on-dark-link: #dbe1ea;
+  --ink-code:         #e7ecf4;
+
+  --link:        var(--indigo-700);   /* 7.4:1 on white */
+  --link-hover:  var(--indigo-600);
+  --link-dark:   #b9c4ff;             /* on slate-900 */
+  --fill:        var(--indigo-600);   /* button ground, white label */
+  --fill-hover:  var(--indigo-700);
+
+  --line:      #dde2e9;
+  --line-firm: #c2cad4;
+  --line-dark: rgba(219, 225, 234, 0.16);
+
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* A 1.25 scale from 1rem. The display end is set in mono for figures, so it
+     runs larger than a text scale would. */
+  --t-xs:   0.78rem;
+  --t-sm:   0.875rem;
+  --t-base: 1rem;
+  --t-md:   1.125rem;
+  --t-lg:   1.3rem;
+  --t-xl:   1.6rem;
+  --t-2xl:  2rem;
+  --t-3xl:  2.6rem;
+  --t-4xl:  clamp(2.2rem, 5vw, 3.6rem);
+  --t-hero: clamp(2.3rem, 5.6vw, 4.2rem);
+  --t-figure: clamp(2.4rem, 6vw, 4.4rem);   /* milliseconds, in mono */
+
+  --lh-tight: 1.05;
+  --lh-snug:  1.2;
+  --lh-body:  1.65;
+
+  --s-1: 0.25rem;  --s-2: 0.5rem;   --s-3: 0.75rem;  --s-4: 1rem;
+  --s-5: 1.5rem;   --s-6: 2rem;     --s-7: 3rem;     --s-8: 4rem;
+  --s-9: 6rem;     --s-10: 8rem;
+
+  --wrap: 74rem;
+  --wrap-narrow: 44rem;
+
+  --radius:    10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px rgba(19, 23, 33, 0.06), 0 2px 8px rgba(19, 23, 33, 0.05);
+  --shadow-md: 0 2px 4px rgba(19, 23, 33, 0.05), 0 14px 32px rgba(19, 23, 33, 0.09);
+  --shadow-lift: 0 4px 8px rgba(19, 23, 33, 0.06), 0 22px 44px rgba(19, 23, 33, 0.13);
+
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}

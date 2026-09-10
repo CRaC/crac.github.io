@@ -1,0 +1,65 @@
+{{- /* The signature element: time to first operation, cold start against
+       restore, drawn AT TRUE SCALE from the project's own measurements in
+       data/startup.yaml.
+
+       True scale is the whole point. At true scale a 38 ms restore beside a
+       3898 ms cold start is a 1% sliver, and that sliver IS the argument. The
+       usual way this chart gets drawn is a log axis, which makes the bars
+       comparable and the point invisible.
+
+       BOTH bars are on the same scale — the slowest cold start in the set is
+       100%. Scaling only the restore, with every cold bar at full width, made
+       a 980 ms cold start look the same as a 4352 ms one.
+
+       The provenance is rendered with the numbers, not hidden behind a link.
+       They were measured on a jdk14-crac build on 2015 hardware, so they show
+       the shape of the improvement rather than what today's runtime does — and
+       a reader deciding whether to believe them needs to know that. */ -}}
+{{- $d := hugo.Data.startup -}}
+{{- $max := 0 -}}
+{{- range $d.frameworks }}{{ if gt .cold $max }}{{ $max = .cold }}{{ end }}{{ end -}}
+<div class="collapse">
+  <div class="collapse__head">
+    <h2>Time to first operation</h2>
+    <p class="collapse__legend">
+      <span><i class="cold"></i> cold start</span>
+      <span><i class="restore"></i> restored from a CRaC image</span>
+    </p>
+  </div>
+
+  <div class="collapse__rows">
+    {{/* File order, not sorted: data/startup.yaml lists the recognisable
+         frameworks first and the synthetic benchmark last, and sorting by
+         either time or ratio just reorders it to flatter effect. */}}
+    {{ range $d.frameworks }}
+    {{ $coldPct := mul (div (float .cold) (float $max)) 100 }}
+    {{ $restorePct := mul (div (float .restore) (float $max)) 100 }}
+    <div class="collapse__row">
+      <div class="collapse__name">
+        {{ .name }}
+        <span>{{ lang.FormatNumber 0 (div (float .cold) (float .restore)) }}× faster</span>
+      </div>
+      <div class="collapse__track">
+        {{/* The bar is the cold start at full width; the inner span is the
+             restore as its true fraction of it. */}}
+        <div class="collapse__bar" role="img"
+             style="width: {{ printf "%.2f" $coldPct }}%"
+             aria-label="{{ .name }}: {{ .cold }} milliseconds cold, {{ .restore }} milliseconds restored">
+          <i style="width: {{ printf "%.2f" (mul (div $restorePct $coldPct) 100) }}%"></i>
+        </div>
+        <p class="collapse__figures">
+          <span class="restore"><b>{{ .restore }} ms</b> restored</span>
+          <span class="cold"><b>{{ .cold }} ms</b> cold</span>
+        </p>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+
+  <p class="collapse__note">
+    Measured by the project on {{ $d.measured.jdk }}: {{ $d.measured.hardware }},
+    {{ $d.measured.kernel }}, in a {{ $d.measured.container }}.
+    {{ $d.measured.note }}
+    <a href="{{ "about/results/" | relURL }}">Full results and how to reproduce them</a>.
+  </p>
+</div>

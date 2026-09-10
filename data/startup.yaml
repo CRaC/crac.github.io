@@ -1,0 +1,39 @@
+# Time to first operation, cold start against restore from a CRaC image.
+#
+# These are the project's OWN MEASUREMENTS, transcribed from
+# static/data/startup.data — not estimates and not marketing figures. The
+# collapse bars on the home page and the results page are drawn from this file
+# at true scale.
+#
+# The provenance matters as much as the numbers and is rendered beside them.
+# They were taken on a jdk14-crac build on a 2015 laptop under Linux 5.7.4, so
+# they show the SHAPE of the improvement rather than what today's runtime does
+# on today's hardware. Anyone quoting them should quote the conditions too.
+measured:
+  jdk: "jdk14-crac"
+  hardware: "Intel i7-5500U laptop, 16 GB RAM, SSD"
+  kernel: "Linux 5.7.4"
+  container: "ubuntu:18.04 based image"
+  reproduce: "https://github.com/org-crac/utils"
+  note: >-
+    Collected with org-crac/utils/full-bench.sh. The absolute numbers are of
+    their time; the ratio between them is the point.
+
+# `cold` and `restore` are milliseconds to first operation.
+frameworks:
+  - name: "Spring Boot"
+    cold: 3898
+    restore: 38
+    example: "https://github.com/CRaC/example-spring-boot"
+  - name: "Quarkus"
+    cold: 980
+    restore: 33
+    example: "https://github.com/CRaC/example-quarkus"
+  - name: "Micronaut"
+    cold: 1001
+    restore: 46
+    example: "https://github.com/CRaC/example-micronaut"
+  - name: "XML transform"
+    cold: 4352
+    restore: 53
+    example: "https://github.com/CRaC/example-xml-transform"

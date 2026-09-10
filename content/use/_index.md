@@ -1,14 +1,26 @@
-+++
-title = "Using CRaC"
-weight = 13
-+++
-
+---
+title: "Using CRaC"
+linkTitle: "Overview"
+weight: 13
+eyebrow: "Deployment"
+lede: "CRaC's deployment scheme follows from where the image has to come from."
+description: "The deployment scheme CRaC implies: warm an application up, take an image, ship the image."
+---
 <!--
 CRaC allows to start Java applications that are already initialized and warmed-up.
 Deployment scheme reflects the need to collect the required data.
 -->
 
+## Why the scheme looks like this
+
 CRaC deployment scheme reflects the need to collect data required for Java application initialization and warm-up.
+
+An image has to come from a JVM that has already done the work worth keeping —
+loaded its classes and compiled its hot paths. That cannot happen at build
+time, so the application is run and exercised first, and the image it produces
+becomes part of what ships.
+
+## The three stages
 
 ![Operation Flow](/images/flow/flow.png)
 

@@ -1,0 +1,29 @@
+{{- /* Markdown tables, wrapped in their own scroll container.
+
+       Goldmark emits a bare <table>, and a table's minimum width is its
+       content's — so one cell holding a long path makes the whole page scroll
+       sideways on a phone. `display: block; overflow: auto` on the table
+       itself would fix the scrolling and destroy the column alignment, so the
+       wrapper is the only place the overflow can live. */ -}}
+<div class="table-wrap">
+  <table>
+    <thead>
+      {{- range .THead }}
+      <tr>
+        {{- range . }}
+        <th{{ with .Alignment }}{{ if ne . "left" }} style="text-align: {{ . }}"{{ end }}{{ end }}>{{ .Text }}</th>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </thead>
+    <tbody>
+      {{- range .TBody }}
+      <tr>
+        {{- range . }}
+        <td{{ with .Alignment }}{{ if ne . "left" }} style="text-align: {{ . }}"{{ end }}{{ end }}>{{ .Text }}</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</div>

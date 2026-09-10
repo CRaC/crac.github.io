@@ -1,33 +1,235 @@
-languageCode = 'en-us'
+# crac.org — the CRaC project site.
+#
+# Overridden by the GitHub Pages workflow so a project-site preview builds
+# under its own URL.
+baseURL = "https://crac.org/"
+locale = "en-GB"
 defaultContentLanguage = "en"
-baseURL = 'https://crac.org/'
-title = 'CRaC.org'
-theme = 'hugo-theme-relearn-7.3.2'
-publishDir = "public"
+title = "CRaC"
+enableRobotsTXT = true
+timeZone = "Europe/Brussels"
+summaryLength = 30
+# No taxonomies on this site; without this Hugo renders empty /categories/ and
+# /tags/ list pages that the link check and the sitemap then have to explain.
+disableKinds = ["taxonomy", "term"]
+
+# No theme. This was hugo-theme-relearn; the layouts are now the site's own, so
+# themes/hugo-theme-relearn-7.3.2/ is dead weight and can be deleted.
 
 [markup.goldmark.renderer]
-unsafe = true
+  unsafe = true            # a few pages carry inline HTML and <details>
+[markup.highlight]
+  noClasses = false
+  style = "nord"
+  tabWidth = 2
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+
+[pagination]
+  pagerSize = 20
+
+[minify]
+  minifyOutput = true
+
+# /llms.txt — the llmstxt.org convention: one plain-text index of the site for
+# a model that has been pointed at it, generated from the content.
+[outputFormats.llms]
+  mediaType = "text/plain"
+  baseName = "llms"
+  isPlainText = true
+  notAlternative = true
+
+[outputs]
+  home = ["html", "rss", "llms"]
 
 [params]
-themeVariant = ['blue']
+  description = "Coordinated Restore at Checkpoint (CRaC) is an OpenJDK project for starting Java applications from a checkpoint image, cutting time to first transaction from seconds to milliseconds."
+  # Fallback image for a shared link. CRaC has no artwork, so this is generated
+  # rather than a file — see layouts/_partials/social-image.html.
+  socialImage = ""
+  # Where "Edit it on GitHub" points. The branch is the one Pages deploys from,
+  # so an edit made through that link is an edit to what the site serves.
+  repo = "https://github.com/CRaC/crac.github.io"
+  repoBranch = "main"
 
-[[menu.shortcuts]]
-name = "<i class='fab fa-github'></i> CRaC Repository"
-url = "https://github.com/CRaC"
-weight = 10
+[menus]
+  # Top-level items carry an `identifier`; children point at it with `parent`,
+  # which is what gives the header its drop-downs. Give every entry an
+  # identifier when its name is not unique: Hugo derives one from the name, so
+  # two children called "Overview" silently become one entry.
+  # Weight 0 reads as unset and sorts last, so the first child needs weight 1.
+  [[menus.main]]
+    identifier = "use"
+    name = "Using CRaC"
+    pageRef = "/use"
+    weight = 10
+    [[menus.main]]
+      identifier = "use-overview"
+      name = "Overview"
+      pageRef = "/use"
+      parent = "use"
+      weight = 1
+    [[menus.main]]
+      name = "Runtimes with CRaC"
+      pageRef = "/use/crac-runtime"
+      parent = "use"
+      weight = 2
+    [[menus.main]]
+      name = "Checkpoint and restore"
+      pageRef = "/use/checkpoint-and-restore"
+      parent = "use"
+      weight = 3
+    [[menus.main]]
+      name = "Implementing the API"
+      pageRef = "/use/implement-crac"
+      parent = "use"
+      weight = 4
 
-[[menu.shortcuts]]
-name = "<i class='fab fa-java'></i> OpenJDK Project"
-url = "https://openjdk.org/projects/crac/"
-weight = 20
+  [[menus.main]]
+    identifier = "frameworks"
+    name = "Frameworks"
+    pageRef = "/frameworks"
+    weight = 20
+    [[menus.main]]
+      identifier = "frameworks-overview"
+      name = "Overview"
+      pageRef = "/frameworks"
+      parent = "frameworks"
+      weight = 1
+    [[menus.main]]
+      name = "Spring Boot"
+      pageRef = "/frameworks/spring-boot"
+      parent = "frameworks"
+      weight = 2
+    [[menus.main]]
+      name = "Quarkus"
+      pageRef = "/frameworks/quarkus"
+      parent = "frameworks"
+      weight = 3
+    [[menus.main]]
+      name = "Micronaut"
+      pageRef = "/frameworks/micronaut"
+      parent = "frameworks"
+      weight = 4
+    [[menus.main]]
+      name = "AWS Lambda"
+      pageRef = "/frameworks/aws-lambda"
+      parent = "frameworks"
+      weight = 5
 
-[[menu.shortcuts]]
-name = "<i class='fab fa-java'></i> OpenJDK Wiki"
-url = "https://wiki.openjdk.org/display/crac"
-weight = 30
+  [[menus.main]]
+    identifier = "examples"
+    name = "Examples"
+    pageRef = "/examples"
+    weight = 30
 
-[[menu.shortcuts]]
-name = "<i class='fab fa-java'></i> Foojay Blogs"
-url = "https://foojay.io/today/category/crac/"
-weight = 40
+  [[menus.main]]
+    identifier = "reference"
+    name = "Reference"
+    pageRef = "/reference"
+    weight = 40
+    [[menus.main]]
+      identifier = "reference-overview"
+      name = "Overview"
+      pageRef = "/reference"
+      parent = "reference"
+      weight = 1
+    [[menus.main]]
+      name = "Best practices"
+      pageRef = "/reference/best-practices"
+      parent = "reference"
+      weight = 2
+    [[menus.main]]
+      name = "Checkpoint engines"
+      pageRef = "/reference/engines"
+      parent = "reference"
+      weight = 3
+    [[menus.main]]
+      name = "Debugging failures"
+      pageRef = "/reference/debugging"
+      parent = "reference"
+      weight = 4
+    [[menus.main]]
+      name = "File descriptor policies"
+      pageRef = "/reference/fd-policies"
+      parent = "reference"
+      weight = 5
+    [[menus.main]]
+      name = "CPU features"
+      pageRef = "/reference/cpu-features"
+      parent = "reference"
+      weight = 6
 
+  [[menus.main]]
+    identifier = "about"
+    name = "About"
+    pageRef = "/about"
+    weight = 50
+    [[menus.main]]
+      identifier = "about-overview"
+      name = "The project"
+      pageRef = "/about"
+      parent = "about"
+      weight = 1
+    [[menus.main]]
+      name = "What CRaC is"
+      pageRef = "/about/about-crac"
+      parent = "about"
+      weight = 2
+    [[menus.main]]
+      name = "Measured results"
+      pageRef = "/about/results"
+      parent = "about"
+      weight = 3
+
+  [[menus.footer_use]]
+    name = "Runtimes with CRaC"
+    pageRef = "/use/crac-runtime"
+    weight = 10
+  [[menus.footer_use]]
+    name = "Checkpoint and restore"
+    pageRef = "/use/checkpoint-and-restore"
+    weight = 20
+  [[menus.footer_use]]
+    name = "Implementing the API"
+    pageRef = "/use/implement-crac"
+    weight = 30
+  [[menus.footer_use]]
+    name = "Frameworks"
+    pageRef = "/frameworks"
+    weight = 40
+  [[menus.footer_use]]
+    name = "Examples"
+    pageRef = "/examples"
+    weight = 50
+
+  [[menus.footer_reference]]
+    name = "Best practices"
+    pageRef = "/reference/best-practices"
+    weight = 10
+  [[menus.footer_reference]]
+    name = "Checkpoint engines"
+    pageRef = "/reference/engines"
+    weight = 15
+  [[menus.footer_reference]]
+    name = "Debugging failures"
+    pageRef = "/reference/debugging"
+    weight = 20
+  [[menus.footer_reference]]
+    name = "File descriptor policies"
+    pageRef = "/reference/fd-policies"
+    weight = 30
+  [[menus.footer_reference]]
+    name = "CPU features"
+    pageRef = "/reference/cpu-features"
+    weight = 40
+
+  [[menus.footer_project]]
+    name = "About CRaC"
+    pageRef = "/about/about-crac"
+    weight = 10
+  [[menus.footer_project]]
+    name = "Measured results"
+    pageRef = "/about/results"
+    weight = 20

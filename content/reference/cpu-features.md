@@ -1,8 +1,12 @@
-+++
-title = "CPU Features"
-weight = 30
-+++
-
+---
+title: "CPU features"
+weight: 30
+eyebrow: "Reference"
+description: "Why a restored image is tied to CPU features, and how to control that."
+# This section was /extra-info/ and is deployed there, so the old path
+# keeps working rather than 404ing for anyone who linked it.
+aliases: ["/extra-info/cpu-features/"]
+---
 CPU features differ from host to host as newer CPUs offer support for newer
 instructions, and some optional features may be removed over time. JVM (Java
 Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.) of each
