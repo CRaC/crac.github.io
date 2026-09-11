@@ -39,6 +39,9 @@
 .tile:hover { border-color: var(--indigo-500); box-shadow: var(--shadow-md); transform: translateY(-2px); color: var(--ink); }
 .tile strong { display: block; font-size: var(--t-md); letter-spacing: -0.018em; }
 .tile span { display: block; font-size: var(--t-sm); color: var(--ink-muted); margin-top: var(--s-2); }
+/* …but a badge inside the heading belongs on that line. It is a span too, and
+   the rule above would otherwise drop it onto a full-width row of its own. */
+.tile strong .badge { display: inline-block; margin-top: 0; margin-left: var(--s-2); }
 .tile__out { font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-faint); margin-top: var(--s-3); display: block; }
 .band--dark .tile { background: var(--slate-800); border-color: var(--line-dark); color: var(--ink-invert); }
 .band--dark .tile:hover { border-color: var(--slate-500); color: #fff; }
@@ -126,7 +129,7 @@
 .badge--vendor { background: var(--surface-cool-2); }
 
 /* Prose ------------------------------------------------------------------ */
-.prose { max-width: 42rem; min-width: 0; }
+.prose { max-width: 50rem; min-width: 0; }
 .prose > * + * { margin-top: var(--s-4); }
 .prose > * + h2 { margin-top: var(--s-7); }
 .prose > * + h3 { margin-top: var(--s-6); }
@@ -170,6 +173,9 @@
   content: "↗"; font-size: 0.8em; margin-left: 0.15em; vertical-align: 0.15em;
   text-decoration: none; color: var(--ink-faint);
 }
+/* A tile is a box, not a run of text: the marker has no line to sit at the end
+   of, so it lands alone on a row under the description. */
+.prose .tile[target="_blank"]::after { content: none; }
 
 /* Table of contents ------------------------------------------------------ */
 /* min-width: 0 on the children is not a detail: a grid item's default minimum
@@ -178,7 +184,14 @@
 .with-toc { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
 .with-toc > * { min-width: 0; }
 @media (min-width: 62rem) {
-  .with-toc { grid-template-columns: minmax(0, 46rem) 15rem; justify-content: space-between; }
+  /* space-between pushed the two columns to the edges of the wrap and left a
+     160px trench between the text and its own table of contents, which read as
+     two unrelated columns. They sit together instead, with the slack at the
+     outside edge where it belongs. */
+  .with-toc {
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 17rem);
+    gap: var(--s-8);
+  }
   .toc { position: sticky; top: 5.5rem; align-self: start; }
 }
 .toc { font-size: var(--t-sm); }

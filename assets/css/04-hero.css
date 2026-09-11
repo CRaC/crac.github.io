@@ -5,7 +5,7 @@
 /* --------------------------------------------------------------------------- */
 .hero {
   position: relative; background: var(--slate-900); color: var(--ink-invert);
-  overflow: hidden; padding-block: var(--s-8) calc(var(--s-8) + 2rem);
+  overflow: hidden; padding-block: var(--s-7) calc(var(--s-7) + 1rem);
 }
 .hero::before {
   /* A single cool wash, off to the right, so the field is not flat. It is not
@@ -21,11 +21,11 @@
    the right of the prose below. The measure belongs on the text instead, which
    keeps every left edge on the same line. */
 .hero__inner { position: relative; }
-.hero h1 { font-size: var(--t-hero); color: #fff; max-width: 60rem; }
-.hero__lede { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-5); max-width: 42rem; }
-.hero .btn-row { margin-top: var(--s-6); }
+.hero h1 { font-size: var(--t-hero); color: #fff; max-width: 68rem; }
+.hero__lede { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-4); max-width: 44rem; }
+.hero .btn-row { margin-top: var(--s-5); }
 .hero__meta {
-  margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
   font-family: var(--font-mono); font-size: var(--t-xs); letter-spacing: 0.04em;
   color: var(--ink-invert-faint); max-width: 46rem;
 }
@@ -41,13 +41,13 @@
   padding-block: var(--s-6); position: relative; overflow: hidden;
 }
 .page-head__inner { position: relative; }
-.page-head h1 { color: #fff; font-size: clamp(1.9rem, 3.2vw, 2.6rem); max-width: 46rem; }
+.page-head h1 { color: #fff; font-size: clamp(1.9rem, 3.2vw, 2.6rem); max-width: 50rem; }
 /* The trail and the eyebrow stack, each on its own line — sharing a line made
    the eyebrow read as the last crumb. They are tightened instead: this head
    sits under a sticky masthead, so its rows come out of the first screen. */
 .page-head .crumbs { margin-bottom: var(--s-3); }
 .page-head .eyebrow { margin-bottom: var(--s-3); }
-.page-head p { font-size: var(--t-base); color: var(--ink-invert-muted); margin-top: var(--s-3); max-width: 46rem; }
+.page-head p { font-size: var(--t-base); color: var(--ink-invert-muted); margin-top: var(--s-3); max-width: 50rem; }
 .page-head .btn-row { margin-top: var(--s-5); }
 /* The band under the page head opens with a full band's worth of air, which
    after a dark header reads as a gap rather than as separation. */

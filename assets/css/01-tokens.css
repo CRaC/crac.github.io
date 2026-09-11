@@ -82,7 +82,7 @@
   --t-2xl:  2rem;
   --t-3xl:  2.6rem;
   --t-4xl:  clamp(2.2rem, 5vw, 3.6rem);
-  --t-hero: clamp(2.3rem, 5.6vw, 4.2rem);
+  --t-hero: clamp(2.1rem, 4.4vw, 3.5rem);  /* one line for the home headline on a laptop and up */
   --t-figure: clamp(2.4rem, 6vw, 4.4rem);   /* milliseconds, in mono */
 
   --lh-tight: 1.05;
