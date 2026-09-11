@@ -37,3 +37,40 @@ frameworks:
     points:
       - "CRaC-patched aws-lambda-java-libs"
       - "Published under <code>io.github.crac.com.amazonaws</code>"
+
+# Beyond the four above — which have a page here, an example repository and
+# measured numbers — these projects ship CRaC support of their own. The link on
+# each is the project's OWN documentation of it, never a write-up about it, and
+# the list is alphabetical so nothing in it reads as a ranking. A project whose
+# support is announced but not documented anywhere a reader can check does not
+# go on this list: this site would then be the only source for a claim about
+# someone else's software.
+more:
+  - name: "Atoti Server"
+    by: "ActiveViam"
+    note: "Checkpoint and restore for the analytics server, documented by ActiveViam."
+    url: "https://docs.activeviam.com/engine/java-sdk/6.1/crac/overview"
+
+  - name: "Helidon"
+    since: "4.2"
+    note: "A CRaC guide for both Helidon SE and Helidon MP."
+    url: "https://helidon.io/docs/v4/se/guides/crac"
+
+  - name: "JRuby"
+    since: "10"
+    note: "Ruby on the JVM — the launcher takes the checkpoint, so Ruby start-up goes with it."
+    url: "https://blog.headius.com/2024/09/jruby-on-crac-part-1-lets-get-cracking.html"
+
+  - name: "Open Liberty"
+    since: "crac-1.4"
+    note: "A feature that implements the org.crac API over Liberty InstantOn."
+    url: "https://openliberty.io/docs/latest/reference/feature/crac-1.4.html"
+
+  - name: "Payara"
+    note: "A technical preview in Payara Micro and Payara Server, from the December 2025 release."
+    url: "https://docs.payara.fish/"
+
+  - name: "Piranha"
+    since: "23.1.0"
+    note: "A --enable-crac switch on the Servlet and Core Profile distributions."
+    url: "https://piranha.cloud/release/dist/servlet/run_a_web_application_on_crac.html"

@@ -16,5 +16,16 @@ Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.git
 ## Frameworks
 
 Several frameworks provide CRaC functionality out-of-the-box.
+Each of the pages below covers how that framework coordinates with a checkpoint, and what an application still has to do itself.
 
 {{% children sort="weight" %}}
+
+## More projects with CRaC support
+
+CRaC support reaches further than the frameworks with pages here.
+Each of these links to that project's own documentation of its support, which is where the detail is kept up to date.
+
+{{< more-frameworks >}}
+
+A project is on that list when its own documentation says it supports CRaC.
+Work that is under way but not yet released — and there is a fair amount of it — belongs on the [crac-dev mailing list](https://mail.openjdk.org/mailman/listinfo/crac-dev) rather than here, because a list like this one is read as a promise.

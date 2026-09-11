@@ -68,8 +68,21 @@ They install next to the regular `openjdk-17` and `openjdk-21` packages rather t
 
 AWS Lambda SnapStart is a performance optimization developed by AWS that can significantly improve the startup time for applications. This feature delivers up to 10x faster function startup times for latency-sensitive Java applications at no extra cost, and with minimal or no code changes.
 
-## Other checkpoint/restore implementations
+## Other runtimes with checkpoint/restore
 
-A Java runtime can implement checkpoint/restore without implementing the CRaC API, and one such implementation is widely deployed.
+**Eclipse OpenJ9**, which is the VM in **IBM Semeru Runtimes**, reaches the same
+place by a different road. Its own feature is [CRIU Support](https://eclipse.dev/openj9/docs/criusupport/),
+enabled with `-XX:+EnableCRIUSupport` and driven by the `openj9.criu` API — but
+OpenJ9 also implements the CRaC API on top of it, and publishes the
+[`jdk.crac.management` javadoc](https://eclipse.dev/openj9/docs/api/jdk21/jdk.management/jdk/crac/management/CRaCMXBean.html)
+to prove it. An application written against `org.crac` can therefore run there.
+It is also what [Open Liberty InstantOn](https://openliberty.io/docs/latest/instanton.html)
+is built on, whose [`crac-1.4` feature](https://openliberty.io/docs/latest/reference/feature/crac-1.4.html)
+exposes `org.crac` to a Liberty application.
 
-**Eclipse OpenJ9, and IBM Semeru Runtimes** have their own CRIU-based checkpoint/restore, [OpenJ9 CRIU Support](https://eclipse.dev/openj9/docs/criusupport/). It is driven by the `openj9.criu` module and enabled with `-XX:+EnableCRIUSupport`, rather than by `jdk.crac`, so it is a different API for the same idea and the code an application writes against it is not the code on this site. It is the mechanism under [Open Liberty InstantOn](https://openliberty.io/docs/latest/instanton.html), and Liberty's `crac-1.4` feature puts an `org.crac` implementation on top of it — so an application written against `org.crac` can run there, even though the runtime itself is not a CRaC runtime.
+**Alibaba Dragonwell** carries CRaC in its Extended Edition, listed in its own
+[release notes](https://github.com/dragonwell-project/dragonwell11/wiki/Alibaba-Dragonwell-11-Extended-Edition-Release-Notes).
+
+Neither is a drop-in for the builds above — the enabling switches, the editions
+and the supported platforms are the vendor's own, and the vendor's documentation
+is where those are kept right.
