@@ -18,3 +18,15 @@ runtimes:
     note: "Zulu builds with CRaC, and Azul's own additions documented separately."
     url: "https://www.azul.com/downloads/?package=jdk-crac#zulu"
     docs: "https://docs.azul.com/crac/"
+
+  - name: "BellSoft Liberica JDK"
+    kind: vendor
+    note: "Dedicated Liberica builds with CRaC, as archives and container images."
+    url: "https://bell-sw.com/pages/downloads/?package=jdk-crac"
+    docs: "https://bell-sw.com/libericajdk-with-crac/"
+
+  - name: "Canonical builds of OpenJDK"
+    kind: vendor
+    note: "CRaC packaged in the Ubuntu archive, installed and maintained with apt."
+    url: "https://packages.ubuntu.com/search?keywords=openjdk-21-crac"
+    docs: "https://ubuntu.com/toolchains/java"
