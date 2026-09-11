@@ -21,8 +21,8 @@
    the right of the prose below. The measure belongs on the text instead, which
    keeps every left edge on the same line. */
 .hero__inner { position: relative; }
-.hero h1 { font-size: var(--t-hero); color: #fff; max-width: 46rem; }
-.hero__lede { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-5); max-width: 36rem; }
+.hero h1 { font-size: var(--t-hero); color: #fff; max-width: 60rem; }
+.hero__lede { font-size: var(--t-md); color: var(--ink-invert-muted); margin-top: var(--s-5); max-width: 42rem; }
 .hero .btn-row { margin-top: var(--s-6); }
 .hero__meta {
   margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
@@ -42,11 +42,11 @@
 }
 .page-head__inner { position: relative; }
 .page-head h1 { color: #fff; font-size: clamp(1.9rem, 3.2vw, 2.6rem); max-width: 46rem; }
-.page-head__meta {
-  display: flex; flex-wrap: wrap; align-items: center;
-  gap: var(--s-2) var(--s-5); margin-bottom: var(--s-4);
-}
-.page-head__meta .crumbs, .page-head__meta .eyebrow { margin-bottom: 0; }
+/* The trail and the eyebrow stack, each on its own line — sharing a line made
+   the eyebrow read as the last crumb. They are tightened instead: this head
+   sits under a sticky masthead, so its rows come out of the first screen. */
+.page-head .crumbs { margin-bottom: var(--s-3); }
+.page-head .eyebrow { margin-bottom: var(--s-3); }
 .page-head p { font-size: var(--t-base); color: var(--ink-invert-muted); margin-top: var(--s-3); max-width: 46rem; }
 .page-head .btn-row { margin-top: var(--s-5); }
 /* The band under the page head opens with a full band's worth of air, which
@@ -54,7 +54,7 @@
 .page-head + .band { padding-top: var(--s-6); }
 
 /* Breadcrumbs ------------------------------------------------------------ */
-/* Beside the eyebrow and quieter than it: the eyebrow says what kind of thing
+/* Above the eyebrow and quieter than it: the eyebrow says what kind of thing
    the page is, the trail says where it sits. */
 .crumbs { margin-bottom: var(--s-4); }
 .crumbs ol {
