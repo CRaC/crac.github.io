@@ -71,6 +71,5 @@ more:
     url: "https://docs.payara.fish/"
 
   - name: "Piranha"
-    since: "23.1.0"
     note: "A --enable-crac switch on the Servlet and Core Profile distributions."
     url: "https://piranha.cloud/release/dist/servlet/run_a_web_application_on_crac.html"

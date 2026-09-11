@@ -1,0 +1,10 @@
+{{- /* The projects beyond the four with pages of their own. Data, not markup:
+       see data/frameworks.yaml for what may go on this list and why. */ -}}
+<ul class="tiles">
+  {{ range hugo.Data.frameworks.more }}
+  <li><a class="tile" href="{{ .url }}" {{ partial "link-attrs.html" .url }}>
+    <strong>{{ .name }}{{ with .since }} <span class="badge">{{ if findRE "^[0-9]" . }}since {{ end }}{{ . }}</span>{{ end }}</strong>
+    <span>{{ with .by }}{{ . }} — {{ end }}{{ .note }}</span>
+  </a></li>
+  {{ end }}
+</ul>
