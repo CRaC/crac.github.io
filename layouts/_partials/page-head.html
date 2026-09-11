@@ -1,7 +1,13 @@
 <section class="page-head">
   <div class="wrap page-head__inner">
-    {{ partial "breadcrumbs.html" . }}
-    {{ with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    {{/* The trail and the eyebrow are both one line of micro type, and stacked
+         they cost two rows of a first screen that sits under a sticky
+         masthead. Side by side they cost one, and they still stack on a
+         narrow screen where there is no room to share a line. */}}
+    <div class="page-head__meta">
+      {{ partial "breadcrumbs.html" . }}
+      {{ with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    </div>
     <h1>{{ .Title }}</h1>
     {{ with .Params.lede }}<p>{{ . }}</p>{{ else }}{{ with .Description }}<p>{{ . }}</p>{{ end }}{{ end }}
     {{ with .Params.actions }}

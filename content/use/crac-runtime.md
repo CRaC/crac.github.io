@@ -52,7 +52,7 @@ BellSoft publishes dedicated Liberica JDK builds with CRaC for Java 17 and 21, o
 
 ## Canonical builds of OpenJDK
 
-{{% button href="https://packages.ubuntu.com/search?keywords=openjdk-21-crac" style="blue" icon="rocket" %}}OPENJDK WITH CRAC IN THE UBUNTU ARCHIVE{{% /button %}}
+{{% button href="https://packages.ubuntu.com/search?keywords=openjdk-21-crac" style="blue" icon="rocket" %}}OPENJDK WITH CRAC FOR UBUNTU{{% /button %}}
 
 Canonical packages CRaC-enabled OpenJDK in the Ubuntu archive, so it installs with `apt` and carries Ubuntu's security maintenance. The source packages are `openjdk-17-crac` and `openjdk-21-crac`, in the archive since Ubuntu 24.10 and present in 26.04 LTS:
 

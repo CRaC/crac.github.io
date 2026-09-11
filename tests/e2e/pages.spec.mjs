@@ -33,6 +33,37 @@ test.describe('every page', () => {
   }
 });
 
+test.describe('the page head', () => {
+  // The inner div of the page head carries .wrap, and .wrap centres itself.
+  // Narrowing its max-width therefore centred the head inside the wrap and
+  // parked the title ~200px to the right of the prose it introduces — a
+  // misalignment no amount of reading the CSS made obvious, and one that
+  // only a measured left edge can hold in place.
+  for (const path of ['use/crac-runtime/', 'reference/best-practices/', 'about/results/']) {
+    test(`/${path} starts its title on the same line as its text`, async ({ page }) => {
+      await page.goto(path);
+      const head = await page.locator('.page-head h1').boundingBox();
+      const body = await page.locator('.prose').boundingBox();
+      expect(Math.abs(head.x - body.x), 'title left edge vs prose left edge').toBeLessThanOrEqual(1);
+    });
+  }
+
+  test('the head leaves the first screen mostly to the page', async ({ page }) => {
+    // It sits under a sticky masthead, so its height comes off the first
+    // screen of every page on the site. This was 441px — better than half a
+    // laptop screen spent on a title the reader just clicked — and the budget
+    // is what keeps it from creeping back. The page checked is the one with
+    // the longest description, so it is the worst case rather than a typical
+    // one; the headroom above 300 is for a description that wraps to one more
+    // line under a different font stack on CI.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('use/crac-runtime/');
+    const masthead = await page.locator('.masthead').boundingBox();
+    const head = await page.locator('.page-head').boundingBox();
+    expect(masthead.height + head.height, 'chrome above the content').toBeLessThan(340);
+  });
+});
+
 test.describe('aliases', () => {
   for (const path of aliases) {
     test(`/${path} redirects`, async ({ page, baseURL }) => {

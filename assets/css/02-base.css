@@ -148,6 +148,12 @@ th {
               transform 0.15s var(--ease), color 0.15s var(--ease);
 }
 .btn:hover { transform: translateY(-1px); }
+/* nowrap keeps a label on one line, which is right until the label is longer
+   than the phone is wide: then the button — and the page with it — scrolls
+   sideways. A long label wraps rather than widening the viewport. */
+@media (max-width: 40rem) {
+  .btn { white-space: normal; max-width: 100%; }
+}
 .btn svg { width: 1.05em; height: 1.05em; flex: none; }
 
 .btn--primary { background: var(--fill); color: #fff; }
