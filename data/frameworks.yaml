@@ -30,6 +30,15 @@ frameworks:
       - "Hikari DataSource and Redis coordination"
       - "Gradle plugin builds the image in one command"
 
+  - name: "Helidon"
+    logo: "images/logo/helidon.webp"
+    page: "/frameworks/helidon/"
+    since: "4.2"
+    points:
+      - "CRaC support since Helidon 4.2, as a preview feature"
+      - "The WebServer and its client connection caches coordinate themselves"
+      - "An application registers through Helidon's own <code>Resumable</code> API"
+
   - name: "AWS Lambda"
     logo: "images/logo/aws-lambda.webp"
     page: "/frameworks/aws-lambda/"
@@ -38,8 +47,8 @@ frameworks:
       - "CRaC-patched aws-lambda-java-libs"
       - "Published under <code>io.github.crac.com.amazonaws</code>"
 
-# Beyond the four above — which have a page here, an example repository and
-# measured numbers — these projects ship CRaC support of their own. The link on
+# Beyond the frameworks above — which have a page here, and mostly an example
+# repository and measured numbers — these projects ship CRaC support of their own. The link on
 # each is the project's OWN documentation of it, never a write-up about it, and
 # the list is alphabetical so nothing in it reads as a ranking. A project whose
 # support is announced but not documented anywhere a reader can check does not
@@ -50,11 +59,6 @@ more:
     by: "ActiveViam"
     note: "Checkpoint and restore for the analytics server, documented by ActiveViam."
     url: "https://docs.activeviam.com/engine/java-sdk/6.1/crac/overview"
-
-  - name: "Helidon"
-    since: "4.2"
-    note: "A CRaC guide for both Helidon SE and Helidon MP."
-    url: "https://helidon.io/docs/v4/se/guides/crac"
 
   - name: "JRuby"
     since: "10"
