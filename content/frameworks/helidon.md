@@ -64,7 +64,7 @@ Two further things are worth knowing:
 * An application can take its own checkpoint instead of waiting for an external
   `jcmd`: `checkpointResumeOnStartup()` requests one and returns on a
   successful resume, and only acts when
-  `-Dio.helidon.crac.checkpoint=onStartup` is set.
+  `-Dio.helidon.resumable.checkpoint=onStart` is set.
 
 ## Guides
 
