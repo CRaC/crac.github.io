@@ -58,12 +58,12 @@ more:
   - name: "Atoti Server"
     by: "ActiveViam"
     note: "Checkpoint and restore for the analytics server, documented by ActiveViam."
-    url: "https://docs.activeviam.com/engine/java-sdk/6.1/crac/overview"
+    url: "https://docs.activeviam.com/engine/java-sdk/6.2/crac/overview"
 
   - name: "JRuby"
-    since: "10"
+    since: "9.4.9.0"
     note: "Ruby on the JVM — the launcher takes the checkpoint, so Ruby start-up goes with it."
-    url: "https://blog.headius.com/2024/09/jruby-on-crac-part-1-lets-get-cracking.html"
+    url: "https://www.jruby.org/2024/11/04/jruby-9-4-9-0.html"
 
   - name: "Open Liberty"
     since: "crac-1.4"
@@ -71,8 +71,8 @@ more:
     url: "https://openliberty.io/docs/latest/reference/feature/crac-1.4.html"
 
   - name: "Payara"
-    note: "A technical preview in Payara Micro and Payara Server, from the December 2025 release."
-    url: "https://docs.payara.fish/"
+    note: "A tech preview in Payara Micro, which checkpoints during boot under --warmup."
+    url: "https://docs.azul.com/payara/technical-documentation/payara-micro-documentation/payara-micro-configuration-and-management/micro-management/crac/crac-support.html"
 
   - name: "Piranha"
     note: "A --enable-crac switch on the Servlet and Core Profile distributions."
